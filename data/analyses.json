@@ -1,0 +1,2361 @@
+{
+  "LP5OCa20Zpg": {
+    "overview_cn": "本视频深入探讨了Anthropic对AI Agent的定义，将其与传统Workflow区分开来，强调Agent的自主决策能力。视频提供了构建高效Agent的实用技巧，如“模型同理心”和清晰的工具描述，并讨论了Agent在编码和搜索等领域的潜力。同时，它也对消费级Agent的过度炒作提出了质疑，并展望了Agent在商业自动化和多Agent环境中的未来发展，为开发者提供了宝贵的实践建议。",
+    "overview_en": "This video from Anthropic clarifies the definition of AI Agents, distinguishing them from traditional Workflows by emphasizing the LLM's autonomy in deciding execution steps. It offers practical tips for building effective agents, such as 'empathy for the model' and clear tool descriptions. The discussion also covers the potential of agents in areas like coding and search, while questioning the overhyped nature of consumer-facing agents and forecasting their future in business automation and multi-agent environments, providing valuable advice for developers.",
+    "timeline": [
+      {
+        "time": "00:00",
+        "cn": "引言：对消费级Agent过度炒作的“热门观点”",
+        "en": "Introduction: A 'hot take' on consumer agents being overhyped"
+      },
+      {
+        "time": "00:41",
+        "cn": "Agent与Workflow的定义与区别",
+        "en": "Defining and distinguishing between Agents and Workflows"
+      },
+      {
+        "time": "02:50",
+        "cn": "Agent与Workflow在提示词层面的实践差异",
+        "en": "Practical differences in prompting for Agents vs. Workflows"
+      },
+      {
+        "time": "04:33",
+        "cn": "构建Agent的经验与教训：模型同理心和工具描述的重要性",
+        "en": "Lessons from building agents: Empathy for the model and good tool descriptions"
+      },
+      {
+        "time": "07:36",
+        "cn": "Anthropic发布Agent定义的原因：统一术语与模型能力提升",
+        "en": "Why Anthropic formalized agent definitions: Terminology clarity and model capabilities"
+      },
+      {
+        "time": "08:46",
+        "cn": "Agent的过度炒作与被低估之处",
+        "en": "Overhyped vs. underhyped aspects of agents"
+      },
+      {
+        "time": "10:12",
+        "cn": "Agent的“最佳切入点”：有价值、复杂且错误成本低的任务（如编码、搜索）",
+        "en": "The 'sweet spot' for agents: Valuable, complex tasks with low error cost (e.g., coding, search)"
+      },
+      {
+        "time": "12:45",
+        "cn": "Agent的未来展望：多Agent环境与商业应用",
+        "en": "Future outlook for agents: Multi-agent environments and business adoption"
+      },
+      {
+        "time": "16:20",
+        "cn": "给开发者的建议：衡量结果、从简开始、拥抱模型进步",
+        "en": "Advice for developers: Measure results, start simple, build for model improvements"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Agent与Workflow的区别",
+        "desc": "Agent允许大型语言模型（LLM）自主决定循环运行的次数，直到找到解决方案，例如在客户支持或代码迭代中。而Workflow则是由一系列固定、预定义的LLM调用组成，步骤明确且可预测。"
+      },
+      {
+        "title": "模型同理心（Empathy for the Model）",
+        "desc": "在设计Agent时，开发者应站在模型的角度思考，提供清晰、完整的指令、工具描述和环境上下文。这有助于模型理解其任务和可用资源，避免因信息不足而做出非预期决策。"
+      },
+      {
+        "title": "可验证性（Verifiability）",
+        "desc": "Agent成功的关键在于其能够验证自身工作并获得反馈。例如，编码Agent可以通过运行测试来判断代码的正确性。这种内置的反馈循环能让Agent不断迭代并趋向正确答案，减少对人工验证的依赖。"
+      },
+      {
+        "title": "Agent用例的“最佳切入点”",
+        "desc": "Agent最适合应用于那些既有价值又复杂，但错误成本或监控错误成本相对较低的任务。编码和搜索是典型的例子，因为它们通常允许一定程度的试错和迭代，且有明确的验证机制。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "An AI Agent is characterized by the LLM's autonomy to decide its own execution path and iteration count until a resolution is found, unlike a fixed-step workflow.",
+        "cn": "AI Agent的核心特征是LLM能够自主决定执行路径和迭代次数，直至找到解决方案，这与固定步骤的Workflow不同。"
+      },
+      {
+        "en": "Effective agent design necessitates 'empathy for the model,' providing clear prompts, comprehensive tool descriptions, and sufficient environmental context.",
+        "cn": "高效的Agent设计需要“模型同理心”，即提供清晰的提示词、全面的工具描述和充足的环境上下文。"
+      },
+      {
+        "en": "Verifiability and integrated feedback loops are crucial for agents to converge on correct answers, making tasks like coding particularly well-suited for agentic approaches.",
+        "cn": "可验证性和内置的反馈循环对Agent收敛到正确答案至关重要，因此编码等任务特别适合Agent方法。"
+      },
+      {
+        "en": "While consumer-facing agents are currently overhyped due to high verification costs and preference specification, significant business adoption for automating repetitive, scalable tasks is anticipated.",
+        "cn": "尽管消费级Agent因高昂的验证成本和偏好设置而过度炒作，但预计Agent将在自动化重复性、可扩展的商业任务中得到广泛应用。"
+      },
+      {
+        "en": "Developers should build products and systems that improve as underlying models get smarter, rather than being threatened by advancements in AI capabilities.",
+        "cn": "开发者应构建能够随着底层模型智能化而不断改进的产品和系统，而非被AI能力的进步所威胁。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "AI Agent",
+        "en": "An AI system where the Large Language Model (LLM) decides how many times to run or loop until it finds a resolution, rather than following a fixed number of steps.",
+        "cn": "一种AI系统，其中大型语言模型（LLM）自主决定执行多少次循环直到找到解决方案，而非遵循固定的步骤数。"
+      },
+      {
+        "word": "Workflow",
+        "en": "A sequence of chained LLM calls with a fixed, predefined number of steps, where the path is generally known and on rails.",
+        "cn": "一系列由固定、预定义步骤组成的LLM调用链，其执行路径通常是已知且按部就班的。"
+      },
+      {
+        "word": "Empathy for the Model",
+        "en": "A design principle for agents, urging developers to consider how the model perceives its environment and instructions, providing explicit context and clear tool descriptions.",
+        "cn": "Agent的设计原则，敦促开发者考虑模型如何感知其环境和指令，提供明确的上下文和清晰的工具描述。"
+      },
+      {
+        "word": "Verifiability",
+        "en": "The ability for an agent to check its own work or receive feedback (e.g., through tests) to determine if its actions are correct, enabling it to converge on the right answer.",
+        "cn": "Agent能够检查自身工作或接收反馈（例如通过测试）以判断其行动是否正确的能力，使其能够收敛到正确的答案。"
+      },
+      {
+        "word": "Multi-agent Environment",
+        "en": "A system where multiple AI agents interact and coordinate with each other to achieve a common or individual goal, often leading to emergent behaviors.",
+        "cn": "一个由多个AI Agent相互作用和协调以实现共同或个体目标的系统，通常会产生涌现行为。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Hot take",
+        "cn": "热门观点；大胆的看法"
+      },
+      {
+        "en": "on rails",
+        "cn": "按部就班地进行；有既定流程的"
+      },
+      {
+        "en": "go after a fly with a bazooka",
+        "cn": "杀鸡用牛刀；小题大做"
+      },
+      {
+        "en": "double-click on something",
+        "cn": "深入探讨某事；仔细研究"
+      }
+    ],
+    "reflection_questions": [
+      "在你的实际或设想项目中，如何根据任务的复杂性和自主性需求，有效区分并选择应用AI Agent或Workflow模式？",
+      "除了视频中强调的“模型同理心”和“可验证性”，你认为在设计和部署高可靠性AI Agent时，还有哪些关键的考量因素和挑战？"
+    ],
+    "closing_note": "在AI Agent的浪潮中，专注于构建可衡量、可扩展的解决方案，并以开放的心态拥抱模型能力的持续进步。"
+  },
+  "AmdLVWMdjOk": {
+    "overview_cn": "这段访谈核心讲三件事：产品来自用户已有行为（latent demand）、工程师要做通才、以及 AI 时代工程的核心从“写代码”变成“编排系统”。",
+    "overview_en": "Boris Cherny discusses the founding principles of Claude Code: products built on latent demand, why generalist engineers have the edge in the AI era, and how the engineering paradigm is shifting from writing code to orchestrating AI systems.",
+    "timeline": [
+      {
+        "time": "00:00",
+        "en": "Latent demand is the most important product principle",
+        "cn": "Latent demand 是最重要产品原则"
+      },
+      {
+        "time": "00:00",
+        "en": "You can't create demand, only amplify existing behavior",
+        "cn": "不能创造需求，只能放大已有行为"
+      },
+      {
+        "time": "00:00",
+        "en": "Generalist engineers outperform specialists in fast-moving environments",
+        "cn": "速变环境中通才工程师优于专才"
+      },
+      {
+        "time": "00:00",
+        "en": "Automation is the highest leverage for engineers",
+        "cn": "自动化是工程师最大杠杠"
+      },
+      {
+        "time": "00:00",
+        "en": "AI coding dramatically compresses team size (30 engineers to 5)",
+        "cn": "AI 编程极大压缩团队规模30人→5人"
+      },
+      {
+        "time": "00:00",
+        "en": "Engineering paradigm shifts to agent orchestration",
+        "cn": "工程范式转变为 agent 编排"
+      },
+      {
+        "time": "00:00",
+        "en": "Claude Code succeeded by betting on future model capabilities",
+        "cn": "Claude Code 成功源于压注未来模型能力"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Latent Demand / 潜在需求",
+        "desc": "用户已经在做但产品尚未结构化支持的行为。好产品不是发明新需求，而是让已有需求变得更容易满足。Claude Code 的 plan 模式和 Claude.md 都源于观察用户真实行为。"
+      },
+      {
+        "title": "Generalist Engineer / 通才工程师",
+        "desc": "跨产品/设计/工程多领域能力的工程师。在 AI 将单一技能自动化的时代，能够精准定义问题、跨领域协调的工程师更有价値。"
+      },
+      {
+        "title": "Orchestration / 编排",
+        "desc": "工程师的角色正从“写代码”转向“设计系统 + 编排 AI + 控制结果”。这是英鹤而非专层的运作模式，要求对系统整体理解。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Latent demand is the foundation of great products.",
+        "cn": "潜在需求是好产品的基础。"
+      },
+      {
+        "en": "Build for where models are going, not where they are.",
+        "cn": "为未来模型能力构建，而不是当前能力。"
+      },
+      {
+        "en": "Generalists outperform specialists in fast-moving environments.",
+        "cn": "在快速变化环境中，通才更有优势。"
+      },
+      {
+        "en": "Automation is the highest leverage for engineers.",
+        "cn": "自动化是工程师最大杠杠。"
+      },
+      {
+        "en": "Engineers are shifting from coding to orchestration.",
+        "cn": "工程师正在从写代码转向编排系统。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Latent demand",
+        "en": "User behaviors that already exist but products haven't yet structured support for.",
+        "cn": "潜在需求：用户已经在做但产品尚未结构化支持的行为。"
+      },
+      {
+        "word": "Generalist",
+        "en": "An engineer with cross-domain skills across product, design, and engineering.",
+        "cn": "通才工程师：跨产品/设计/工程多领域能力的工程师。"
+      },
+      {
+        "word": "Orchestration",
+        "en": "Coordinating multiple AI systems and tools to accomplish complex tasks.",
+        "cn": "编排：协调多个 AI/系统完成任务。"
+      },
+      {
+        "word": "Vibe coding",
+        "en": "Low-control style of letting AI freely generate code.",
+        "cn": "氛围编码：低控制让 AI 自由生成代码。"
+      },
+      {
+        "word": "Unshipping",
+        "en": "Removing low-usage features to improve overall product experience.",
+        "cn": "功能回收：删除低使用功能提升整体体验。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Latent demand is the real signal.",
+        "cn": "潜在需求才是真实信号。"
+      },
+      {
+        "en": "Build for where models are going.",
+        "cn": "为模型的未来方向构建。"
+      },
+      {
+        "en": "Coding is no longer the bottleneck.",
+        "cn": "写代码已不再是瓶颈。"
+      }
+    ],
+    "reflection_questions": [
+      "你的用户已经在做但你还没有结构化支持的事情有哪些？",
+      "如果工程团队从 30 人应压缩到5 人，你会首先自动化哪些环节？"
+    ],
+    "closing_note": "真正的变化不是 AI 写代码，而是代码已不再是瓶颈，杠杠转移到了系统设计与编排。"
+  },
+  "hN5ZFzWFhhg": {
+    "overview_cn": "本期访谈OpenAI Codex前技术负责人Michael Bolin，他分享了从早期编程工具Chickenfoot到在Google、Meta（Facebook）和OpenAI的职业发展历程。他详细讲述了如何通过开发Buck构建系统和New Clyde IDE解决大型科技公司的工程痛点，以及他对开源、职业成长和AI代理的思考。看完后，你将对大型软件工程的挑战、个人职业选择与公司目标对齐的重要性有更深刻的理解。",
+    "overview_en": "This interview features Michael Bolin, former OpenAI Codex Tech Lead, discussing his career journey from early programming tools like Chickenfoot to his roles at Google, Meta, and OpenAI. He shares insights on tackling critical engineering challenges by building tools like the Buck build system and New Clyde IDE, along with his perspectives on open-sourcing, career growth, and the future of AI agents.",
+    "timeline": [
+      {
+        "time": "00:00",
+        "cn": "Michael Bolin的介绍与Codex的使用",
+        "en": "Introduction to Michael Bolin and the usage of Codex"
+      },
+      {
+        "time": "04:30",
+        "cn": "早期项目Chickenfoot：基于Firefox的终端用户编程工具",
+        "en": "Early project Chickenfoot: End-user programming tool for Firefox"
+      },
+      {
+        "time": "09:15",
+        "cn": "加入Google的经历、文化与离职原因",
+        "en": "Joining Google: Experience, culture, and reasons for leaving"
+      },
+      {
+        "time": "17:45",
+        "cn": "转战Facebook/Meta，解决Android构建系统痛点",
+        "en": "Moving to Facebook/Meta and solving Android build system pain points"
+      },
+      {
+        "time": "23:00",
+        "cn": "开发Buck构建系统：提升效率与克服阻力",
+        "en": "Developing the Buck build system: Improving efficiency and overcoming resistance"
+      },
+      {
+        "time": "29:45",
+        "cn": "解决IDE扩展性问题，构建New Clyde",
+        "en": "Addressing IDE scalability issues and building New Clyde"
+      },
+      {
+        "time": "34:30",
+        "cn": "开放源代码的理念与晋升E8/Principal",
+        "en": "Philosophy of open-sourcing and promotion to E8/Principal"
+      },
+      {
+        "time": "38:00",
+        "cn": "“英雄之旅”的教训与职业发展反思",
+        "en": "Lessons from the 'hero quest' and career development reflections"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "终端用户编程 (End-User Programming)",
+        "desc": "一种允许非专业开发者通过自然语言或简单操作创建软件工具或自动化任务的方法。Michael Bolin的硕士项目Chickenfoot就是早期尝试，与现代AI代理在自然语言处理方面有异曲同工之妙。"
+      },
+      {
+        "title": "构建系统优化 (Build System Optimization)",
+        "desc": "在大型软件项目中，高效的构建系统是提升开发者生产力的关键。Michael Bolin在Facebook开发Buck，通过增量构建和模块化设计，显著缩短了编译时间，解决了困扰开发团队的痛点。"
+      },
+      {
+        "title": "规模化开发工具 (Scaling Developer Tools)",
+        "desc": "随着公司和项目规模的增长，现有的开发工具（如IDE）往往难以满足需求。Facebook作为拥有最大移动应用的公司，率先遇到了这些瓶颈，促使团队开发定制化的解决方案，如New Clyde IDE。"
+      },
+      {
+        "title": "开放源代码的价值 (Value of Open Sourcing)",
+        "desc": "大型科技公司将非核心技术开源，不仅能回馈社区，获得外部贡献，还能作为招聘和展示技术实力的手段。Buck和New Clyde的开源，让其他公司受益，也提升了Facebook在开发者社区的影响力。"
+      },
+      {
+        "title": "职业成长与公司目标对齐 (Career Growth & Company Alignment)",
+        "desc": "个人职业发展不仅需要技术实力，更要学会将个人激情与公司的核心目标对齐。Michael Bolin的经历表明，选择对公司有重大影响的项目，即使初期面临阻力，也更容易获得认可和晋升。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Proactively addressing fundamental developer tooling issues can have a disproportionately large impact on an organization's productivity and your career.",
+        "cn": "主动解决基础开发者工具问题，能对组织生产力和个人职业发展产生巨大的积极影响。"
+      },
+      {
+        "en": "Gaining credibility in a new environment often requires demonstrating tangible results, even if it means challenging existing norms or starting small.",
+        "cn": "在新环境中建立信誉，通常需要通过展示具体成果，即使这意味着挑战现有规范或从小处着手。"
+      },
+      {
+        "en": "Open-sourcing non-core technologies offers benefits beyond direct contributions, including recruiting, community engagement, and setting industry standards.",
+        "cn": "开源非核心技术带来的好处远超直接贡献，还包括人才招聘、社区参与和树立行业标准。"
+      },
+      {
+        "en": "True career growth at senior levels involves aligning personal passion projects with the company's most pressing and impactful needs.",
+        "cn": "高级别的职业成长，在于将个人热情的项目与公司最紧迫、最有影响力的需求相结合。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "OpenAI Codex",
+        "en": "An AI model developed by OpenAI that translates natural language into code.",
+        "cn": "OpenAI开发的AI模型，能将自然语言指令转化为代码。"
+      },
+      {
+        "word": "Chickenfoot",
+        "en": "Michael Bolin's master's thesis project, a Firefox extension for end-user programming on the web using natural language-like commands.",
+        "cn": "Michael Bolin的硕士论文项目，一个Firefox扩展，旨在通过类似自然语言的命令实现网页的终端用户编程。"
+      },
+      {
+        "word": "Buck",
+        "en": "A high-performance build system developed at Facebook by Michael Bolin, designed for incremental builds and supporting large-scale projects.",
+        "cn": "Michael Bolin在Facebook开发的、用于大规模项目的增量式高性能构建系统。"
+      },
+      {
+        "word": "New Clyde",
+        "en": "An internal desktop IDE built at Facebook to replace Xcode, specifically designed to scale for Facebook's large iOS codebase and unique needs.",
+        "cn": "Facebook内部开发的桌面集成开发环境，旨在取代Xcode，以适应Facebook庞大的iOS代码库和特殊需求。"
+      },
+      {
+        "word": "Hero Quest",
+        "en": "A personal career trap where an engineer attempts to solve a massive, complex problem alone, often outside their core expertise, driven by ego rather than strategic alignment.",
+        "cn": "一种职业陷阱，指工程师出于自我驱动，试图独自解决一个巨大而复杂的问题，但往往超出了其核心专长，而非出于战略性考量。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "I almost feel a little bad writing code by hand.",
+        "cn": "我手写代码时几乎感觉有点不好意思了。（指AI辅助编程的效率提升）"
+      },
+      {
+        "en": "Harder not smarter.",
+        "cn": "事倍功半；用蛮力而非巧劲。（形容不当的努力方向）"
+      },
+      {
+        "en": "We really don't care.",
+        "cn": "我们真的不在乎。（形容不同公司文化下对过往经验的态度）"
+      }
+    ],
+    "reflection_questions": [
+      "在你的职业生涯中，是否有过“英雄之旅”式的尝试？你从中获得了哪些经验教训？",
+      "如何平衡个人对技术的热情与公司战略方向，以实现更好的职业发展？"
+    ],
+    "closing_note": "审视你工作中的痛点，思考如何通过解决基础性问题来创造更大的价值和影响力。"
+  },
+  "zjkBMFhNj_g": {
+    "overview_cn": "本视频深入浅出地介绍了大型语言模型（LLM）的内部工作原理，从其作为“两个文件”的物理存在，到训练过程（预训练与微调），再到核心任务（下一词预测）和行业现状。看完后，你将对LLM的构建、能力边界和未来发展趋势有清晰的认识。",
+    "overview_en": "This talk provides an accessible introduction to Large Language Models (LLMs), covering their fundamental structure as 'two files,' the training process (pre-training and fine-tuning), their core function (next-word prediction), and the current industry landscape. It offers a clear understanding of how LLMs are built, their capabilities, and future trends.",
+    "timeline": [
+      {
+        "time": "00:00",
+        "cn": "介绍LLM的物理构成：参数文件与运行代码",
+        "en": "Introduction to LLM's physical structure: parameters file and run code"
+      },
+      {
+        "time": "01:00",
+        "cn": "以Llama 2 70B为例，对比开放权重与封闭模型",
+        "en": "Using Llama 2 70B as an example, comparing open-weights and closed models"
+      },
+      {
+        "time": "03:00",
+        "cn": "模型推理：在本地设备上运行LLM",
+        "en": "Model inference: Running an LLM locally"
+      },
+      {
+        "time": "05:00",
+        "cn": "模型训练：将互联网文本压缩进参数（成本与规模）",
+        "en": "Model training: Compressing internet text into parameters (cost and scale)"
+      },
+      {
+        "time": "09:00",
+        "cn": "神经网络的核心任务：下一词预测",
+        "en": "The neural network's core task: Next-word prediction"
+      },
+      {
+        "time": "14:00",
+        "cn": "模型推理的输出：生成“互联网文档之梦”",
+        "en": "Model inference output: Generating 'internet document dreams'"
+      },
+      {
+        "time": "18:00",
+        "cn": "Transformer架构与参数的不可理解性",
+        "en": "Transformer architecture and the inscrutability of parameters"
+      },
+      {
+        "time": "23:00",
+        "cn": "获取助手模型：预训练与微调（知识与对齐）",
+        "en": "Obtaining an assistant model: Pre-training and fine-tuning (knowledge and alignment)"
+      },
+      {
+        "time": "32:00",
+        "cn": "第三阶段微调：RLHF（人类反馈强化学习）",
+        "en": "Stage 3 fine-tuning: RLHF (Reinforcement Learning from Human Feedback)"
+      },
+      {
+        "time": "38:00",
+        "cn": "LLM排行榜：Chatbot Arena与开放/封闭模型动态",
+        "en": "LLM Leaderboard: Chatbot Arena and the dynamics of open vs. closed models"
+      },
+      {
+        "time": "43:00",
+        "cn": "缩放定律：模型性能随参数和数据量可预测增长",
+        "en": "Scaling laws: Predictable performance growth with parameters and data"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "LLM的物理构成",
+        "desc": "大型语言模型本质上由两个文件组成：一个存储神经网络权重的“参数文件”，以及一个运行这些参数的“代码文件”。这种简洁的构成使其能够脱机运行。"
+      },
+      {
+        "title": "下一词预测",
+        "desc": "LLM的核心任务是根据给定序列预测下一个词。这项看似简单的任务迫使模型学习并压缩了大量关于世界的知识，从而能生成连贯且有意义的文本。"
+      },
+      {
+        "title": "预训练与微调",
+        "desc": "LLM的训练分为两阶段：预训练（Pre-training）在大规模互联网数据上进行，旨在获取广泛知识；微调（Fine-tuning）则在高质量、人工标注的对话数据上进行，旨在将模型对齐为有用的“助手”。"
+      },
+      {
+        "title": "缩放定律（Scaling Laws）",
+        "desc": "LLM的性能（下一词预测准确率）与模型参数量和训练数据量之间存在可预测的平滑关系。这意味着通过增加计算资源和数据，可以持续提升模型性能，而无需突破性算法创新。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Large Language Models are fundamentally next-word predictors that compress vast amounts of internet knowledge into their parameters.",
+        "cn": "大型语言模型本质上是下一词预测器，它将海量的互联网知识压缩到其参数中。"
+      },
+      {
+        "en": "The development of an LLM involves two main stages: expensive pre-training for knowledge acquisition and cheaper fine-tuning for behavioral alignment as an assistant.",
+        "cn": "LLM的开发主要包括两个阶段：昂贵的预训练用于知识获取，以及相对便宜的微调用于行为对齐，使其成为一个助手。"
+      },
+      {
+        "en": "Scaling laws indicate that LLM performance predictably improves with more parameters and data, driving the current 'Gold Rush' in AI.",
+        "cn": "缩放定律表明，LLM性能随着参数和数据量的增加而可预测地提升，这驱动了当前AI领域的“淘金热”。"
+      },
+      {
+        "en": "Despite knowing the architecture, the exact internal workings and reasoning processes of billions of LLM parameters remain largely inscrutable.",
+        "cn": "尽管我们了解其架构，但数十亿LLM参数的精确内部工作原理和推理过程在很大程度上仍然难以捉摸。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Parameters",
+        "en": "The weights and biases of a neural network, representing the learned knowledge and patterns.",
+        "cn": "参数：神经网络的权重和偏差，代表模型学习到的知识和模式。"
+      },
+      {
+        "word": "Inference",
+        "en": "The process of running a trained model to make predictions or generate outputs.",
+        "cn": "推理：运行已训练模型以进行预测或生成输出的过程。"
+      },
+      {
+        "word": "Pre-training",
+        "en": "The initial, computationally intensive stage of LLM training on a massive dataset to learn general language understanding.",
+        "cn": "预训练：LLM训练的初始阶段，计算密集，在大规模数据集上进行，旨在学习通用的语言理解能力。"
+      },
+      {
+        "word": "Fine-tuning",
+        "en": "A subsequent training stage that adapts a pre-trained model to a specific task or desired behavior using a smaller, high-quality dataset.",
+        "cn": "微调：预训练后的一个训练阶段，使用较小但高质量的数据集，使预训练模型适应特定任务或期望的行为。"
+      },
+      {
+        "word": "Scaling Laws",
+        "en": "Empirical observations that show a predictable relationship between LLM performance and the scale of computing resources (parameters, data, compute).",
+        "cn": "缩放定律：经验观察，揭示了LLM性能与计算资源规模（参数、数据、计算量）之间存在可预测的关系。"
+      },
+      {
+        "word": "RLHF (Reinforcement Learning from Human Feedback)",
+        "en": "A technique that uses human preferences to further align LLMs with desired behaviors, often involving comparison labels.",
+        "cn": "人类反馈强化学习：一种利用人类偏好进一步使LLM与期望行为对齐的技术，通常涉及比较标签。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "This is fundamentally the problem that the neural network is performing.",
+        "cn": "这从根本上来说是神经网络正在执行的问题。"
+      },
+      {
+        "en": "You can think about it that way.",
+        "cn": "你可以那样想。"
+      },
+      {
+        "en": "LLMs as kind of like mostly inscrutable artifacts.",
+        "cn": "大型语言模型就像是大部分不可理解的产物。"
+      },
+      {
+        "en": "The magic really is in the parameters.",
+        "cn": "真正的魔力在于参数。"
+      }
+    ],
+    "reflection_questions": [
+      "考虑到LLM参数的“不可理解性”，我们应如何平衡其能力与潜在风险，以确保负责任的AI发展？",
+      "缩放定律揭示了模型性能与资源投入的强关联，这对于个人开发者或小型团队进入LLM领域意味着什么？"
+    ],
+    "closing_note": "理解LLM从“下一词预测”到“助手”的演变，有助于你更好地利用和评估这些强大的工具。"
+  },
+  "LCEmiRjPEtQ": {
+    "overview_cn": "Karpathy 认为软件正在经历又一次底层范式变化。除了传统代码（software 1.0）和神经网络权重（software 2.0），LLM 带来了 software 3.0：用自然语言编程。这会重塑计算栈、产品形态，以及工程师的角色。",
+    "overview_en": "Karpathy argues that software is undergoing another fundamental shift. Beyond traditional code (software 1.0) and neural network weights (software 2.0), LLMs introduce software 3.0: programming computers in natural language. This creates a new computing stack, new product patterns, and a new role for engineers.",
+    "timeline": [
+      {
+        "time": "00:34",
+        "en": "Software is changing again, and this is a unique time to enter the industry.",
+        "cn": "软件再次发生变化，现在是进入行业的特殊窗口期。"
+      },
+      {
+        "time": "01:32",
+        "en": "Software 1.0 is code; software 2.0 is neural network weights.",
+        "cn": "Software 1.0 是代码，software 2.0 是神经网络权重。"
+      },
+      {
+        "time": "03:12",
+        "en": "LLMs create software 3.0: prompts become programs written in English.",
+        "cn": "LLM 带来 software 3.0：prompt 变成了用英语写的程序。"
+      },
+      {
+        "time": "06:17",
+        "en": "LLMs resemble utilities, fabs, and most importantly operating systems.",
+        "cn": "LLM 像公用事业、像晶圆厂，但最像操作系统。"
+      },
+      {
+        "time": "10:07",
+        "en": "LLMs behave like a new computer: model as CPU, context window as memory.",
+        "cn": "LLM 像一种新计算机：模型像 CPU，上下文像内存。"
+      },
+      {
+        "time": "12:43",
+        "en": "Unlike previous technologies, LLMs diffuse from consumers upward.",
+        "cn": "与多数新技术不同，LLM 是先从消费者扩散，而不是先从政府/大企业扩散。"
+      },
+      {
+        "time": "14:31",
+        "en": "LLMs are 'people spirits': superhuman in some ways, fragile in others.",
+        "cn": "LLM 像“人类精神体”：某些方面超人，某些方面却很脆弱。"
+      },
+      {
+        "time": "18:27",
+        "en": "The biggest product opportunity is partial-autonomy apps.",
+        "cn": "最大的产品机会在于“部分自治”的应用。"
+      },
+      {
+        "time": "19:16",
+        "en": "Cursor shows the pattern: context management, orchestration, GUI, autonomy slider.",
+        "cn": "Cursor 展示了典型形态：上下文管理、多模型编排、GUI、自治滑杆。"
+      },
+      {
+        "time": "22:08",
+        "en": "Humans are still the bottleneck because they must verify AI output.",
+        "cn": "人类仍是瓶颈，因为最终还得由人来验证 AI 输出。"
+      },
+      {
+        "time": "25:50",
+        "en": "Autonomy in software will likely take years, not one hype cycle.",
+        "cn": "软件自治会是多年过程，不会靠一个 hype 周期就完成。"
+      },
+      {
+        "time": "28:29",
+        "en": "The right metaphor today is Iron Man suits, not fully autonomous Iron Man robots.",
+        "cn": "当前更合适的隐喻是钓鐵侠战衣，而不是全自主钓鐵侠机器人。"
+      },
+      {
+        "time": "31:49",
+        "en": "The hard part is often not code but deployment, auth, payments, and operational glue.",
+        "cn": "真正难的常常不是代码，而是部署、认证、支付和运维胶水层。"
+      },
+      {
+        "time": "34:13",
+        "en": "Software should increasingly be designed not just for humans, but also for agents.",
+        "cn": "软件未来不只要为人设计，也要为 agent 设计。"
+      },
+      {
+        "time": "38:31",
+        "en": "Over the next decade, autonomy will gradually slide from left to right.",
+        "cn": "未来十年，软件的自治程度会沿着滑杆逐步右移。"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Software 3.0",
+        "desc": "Software 1.0 是人手写代码，Software 2.0 是训练出来的权重，而 Software 3.0 则是通过自然语言 prompt 来编程 LLM。它不是对前两者的替代，而是多出了一层新的可编程介质。"
+      },
+      {
+        "title": "LLM as Operating System / LLM 像操作系统",
+        "desc": "模型像 CPU，上下文窗口像内存，工具调用像外设和系统调用，应用层则像距在其上的 app。这个类比提醒你：未来竞争不只是模型本身，而是围绕模型构建出来的整套软件生态。"
+      },
+      {
+        "title": "Partial Autonomy / 部分自治",
+        "desc": "他最看好的产品方向不是“纯 agent 替你做完一切”，而是 partial autonomy app。核心结构包括：人类可直接操作的传统界面、LLM 帮你做更大粒度任务的接口、可审计的 GUI，以及一个可以调节的 autonomy slider。"
+      },
+      {
+        "title": "People Spirits / 人类精神体",
+        "desc": "Karpathy 把 LLM 形容为“peopole spirits”：它们在知识和表达上很像人，但同时也带着很强的人类式缺陷：幻觉、脆弱的自知、念屭状智能、容易被 prompt injection 影响。正确的工程方法是把它当一个非常强但不可靠的合作者。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Programming has expanded from code and weights to natural language prompts.",
+        "cn": "编程已经从代码和权重扩展到自然语言 prompt。"
+      },
+      {
+        "en": "LLMs should be treated as a new computing platform, not just a feature.",
+        "cn": "LLM 应被视为新计算平台，而不只是一个功能模块。"
+      },
+      {
+        "en": "The best near-term products are partially autonomous, not fully autonomous.",
+        "cn": "近期最好的产品形态是部分自治，而不是完全自治。"
+      },
+      {
+        "en": "Human verification speed is now a key system bottleneck.",
+        "cn": "人类验证速度已成为系统的关键瓶颈。"
+      },
+      {
+        "en": "Software must increasingly be built for both humans and agents.",
+        "cn": "未来软件必须同时面向人类和 agent 构建。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Software 3.0",
+        "en": "Programming LLMs through prompts written in natural language.",
+        "cn": "通过自然语言 prompt 编程 LLM 的新软件范式。"
+      },
+      {
+        "word": "Partial autonomy",
+        "en": "A product design where humans and AI share control instead of handing everything over.",
+        "cn": "人和 AI 共享控制权、而非全部交给 AI 的产品形态。"
+      },
+      {
+        "word": "Autonomy slider",
+        "en": "A tunable level of control between manual operation and full agentic execution.",
+        "cn": "在手动操作与完全自主执行之间可调节的自治程度。"
+      },
+      {
+        "word": "People spirits",
+        "en": "Karpathy's metaphor for LLMs: humanlike but stochastic and fallible.",
+        "cn": "Karpathy 用来描述 LLM 的比喻：像人、但有缺陷的随机人类模拟器。"
+      },
+      {
+        "word": "Vibe coding",
+        "en": "Using AI to rapidly create software with intuition and natural language.",
+        "cn": "借助 AI 以更直觉、更自然语言化的方式快速生成软件。"
+      },
+      {
+        "word": "Agent-friendly infrastructure",
+        "en": "Software, docs, and interfaces designed to be consumed and operated by agents.",
+        "cn": "专门为 agent 理解和操作而优化的软件、文档和接口。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "We are now programming computers in English.",
+        "cn": "我们现在正在用英语给计算机编程。"
+      },
+      {
+        "en": "LLMs are a new kind of computer.",
+        "cn": "LLM 是一种新型计算机。"
+      },
+      {
+        "en": "Keep the AI on a leash.",
+        "cn": "要把 AI 控制在缰结之内。"
+      },
+      {
+        "en": "Build Iron Man suits, not Iron Man robots.",
+        "cn": "先造钓鐵侠战衣，而不是钓鐵侠机器人。"
+      },
+      {
+        "en": "Humans generate less and verify more.",
+        "cn": "人类生成得更少，但验证得更多。"
+      }
+    ],
+    "reflection_questions": [
+      "你的产品现在更像是直接把用户扔给 LLM，还是已经具备了 partial autonomy 的结构？",
+      "你当前系统里最大的瓶颈，是生成能力不够，还是人类验证太慢？",
+      "你的内容、文档、接口，有多少已经是 agent-friendly 的，而不只是 human-friendly 的？"
+    ],
+    "closing_note": "这场演讲最深的一点，不是“AI 现在会写代码”，而是软件已经多出第三层可编程介质。这意味着我们必须围绕一种强大但不可靠的新计算机，重做产品、工作流和基础设施。"
+  },
+  "n1E9IZfvGMA": {
+    "overview_cn": "Dario Amodei 认为 AI 能力的指数级增长基本符合预期，但正在接近一个关键阶段：能力的提升将开始转化为现实世界的结构性变化。核心矛盾在于“能力增长极快”与“经济与社会扩散相对滞后”。",
+    "overview_en": "Dario Amodei argues that AI capability scaling is proceeding as expected but nearing a critical phase where exponential improvements translate into transformative real-world impact. The key tension is between rapid capability growth and slower economic and societal diffusion.",
+    "timeline": [
+      {
+        "time": "00:01",
+        "en": "Scaling progress matches expectations; models evolving toward expert-level capability",
+        "cn": "模型能力按预期演进，从高中→大学→博士级能力"
+      },
+      {
+        "time": "01:24",
+        "en": "Public underestimates how close we are to the end of exponential growth",
+        "cn": "公众严重低估 AI 已接近指数曲线末端"
+      },
+      {
+        "time": "02:06",
+        "en": "Big Blob of Compute hypothesis: compute, data, objective dominate progress",
+        "cn": "“计算+数据+目标函数”决定 AI 进步，而非技巧"
+      },
+      {
+        "time": "04:42",
+        "en": "RL scaling mirrors pretraining scaling",
+        "cn": "RL scaling 与预训练 scaling 本质一致"
+      },
+      {
+        "time": "06:29",
+        "en": "Sample inefficiency vs humans; models closer to evolution than learning",
+        "cn": "模型更像“进化过程”而非人类学习"
+      },
+      {
+        "time": "12:40",
+        "en": "RL environments aim for generalization, not skill memorization",
+        "cn": "RL 目标是泛化，而非逐项技能学习"
+      },
+      {
+        "time": "13:27",
+        "en": "90% confidence AGI-like capability within 10 years",
+        "cn": "10年内实现类AGI能力概率约90%"
+      },
+      {
+        "time": "15:06",
+        "en": "Verifiable tasks (coding) will be solved sooner than subjective ones",
+        "cn": "可验证任务（如编程）将更快被解决"
+      },
+      {
+        "time": "21:46",
+        "en": "Two exponentials: capability vs economic diffusion",
+        "cn": "存在两个指数：能力增长 vs 经济扩散"
+      },
+      {
+        "time": "23:52",
+        "en": "Diffusion constrained by org friction (legal, rollout, adoption)",
+        "cn": "扩散受组织流程限制（合规、部署等）"
+      },
+      {
+        "time": "30:28",
+        "en": "Prediction: 'country of geniuses' within 1-3 years (uncertain)",
+        "cn": "预测1–3年内可能出现“数据中心中的天才国家”"
+      },
+      {
+        "time": "41:33",
+        "en": "In-context learning may substitute for human on-the-job learning",
+        "cn": "上下文学习可能替代“在岗学习”"
+      },
+      {
+        "time": "46:10",
+        "en": "Economic value may reach trillions before 2030",
+        "cn": "2030年前可能产生万亿美元级价値"
+      },
+      {
+        "time": "1:12:48",
+        "en": "AI industry equilibrium: few players, high barriers",
+        "cn": "AI行业将形成少数玩家格局"
+      },
+      {
+        "time": "2:14:07",
+        "en": "Key risk: world doesn't realize speed of change",
+        "cn": "最大风险：外部世界低估变化速度"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Two Exponentials / 两个指数",
+        "desc": "最关键的结构不是“AI是否指数增长”，而是两个叠加但不同步的指数：①能力指数（模型本身）②扩散指数（进入经济系统）。前者接近理论极限，后者受组织摩擦限制。"
+      },
+      {
+        "title": "End of Exponential / 指数末端",
+        "desc": "所谓“指数末端”不是停止增长，而是：能力已足够覆盖绝大多数认知任务，之后的增长更多是边际收益而非质变。关键转折是：能力→现实影响的转化开始主导。"
+      },
+      {
+        "title": "Country of Geniuses / 天才国家",
+        "desc": "Dario 用“数据中心中的天才国家”描述 AI 上限：不是单点能力，而是大规模并行、协作、跨领域认知能力集合。这本质上是“组织级智能”，而非“单体模型能力”。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "AI progress follows a predictable scaling law driven by compute and data.",
+        "cn": "AI进步主要由计算与数据驱动，路径高度可预测。"
+      },
+      {
+        "en": "We are approaching a phase where capability growth converts into real-world impact.",
+        "cn": "AI正进入能力转化为现实影响的阶段。"
+      },
+      {
+        "en": "Economic diffusion, not capability, is the main bottleneck.",
+        "cn": "真正瓶颈不是能力，而是经济扩散。"
+      },
+      {
+        "en": "AGI-like systems are highly likely within a decade, possibly sooner.",
+        "cn": "类AGI系统十年内高度可能出现，甚至更早。"
+      },
+      {
+        "en": "AI growth will be extremely fast but not instantaneous.",
+        "cn": "AI发展将非常快，但不会瞬间完成。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Scaling law",
+        "en": "Performance improves predictably with compute, data, and training.",
+        "cn": "性能随计算、数据、训练规模可预测提升。"
+      },
+      {
+        "word": "Diffusion",
+        "en": "The process of technology spreading into real-world usage.",
+        "cn": "技术在现实世界中的扩散过程。"
+      },
+      {
+        "word": "Soft takeoff",
+        "en": "Rapid but continuous growth rather than sudden explosion.",
+        "cn": "持续快速增长，而非瞬间爆发。"
+      },
+      {
+        "word": "In-context learning",
+        "en": "Models adapting within a given context window without retraining.",
+        "cn": "模型在上下文中学习，而无需再训练。"
+      },
+      {
+        "word": "Total factor productivity",
+        "en": "Overall efficiency gains from technology improvements.",
+        "cn": "技术带来的整体生产效率提升。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "We are near the end of the exponential.",
+        "cn": "我们正接近指数增长的终点。"
+      },
+      {
+        "en": "Capability is not the bottleneck anymore.",
+        "cn": "能力已经不再是瓶颈。"
+      },
+      {
+        "en": "Diffusion is slower than people expect.",
+        "cn": "扩散速度比人们想象的要慢。"
+      },
+      {
+        "en": "This is a soft takeoff, not an explosion.",
+        "cn": "这是平滑加速，而不是爆炸式跃迁。"
+      }
+    ],
+    "reflection_questions": [
+      "在你的项目里，真正的瓶颈是能力问题，还是部署/扩散问题？",
+      "如果AI能力明天翻10倍，你当前产品能否立刻受益？还是会卡在流程/数据/权限？"
+    ],
+    "closing_note": "最关键的不是“等待技术突破”，而是“等待转化发生”。模型能力正在接近临界点，真正的问题是：世界能够多快围绕它重构。"
+  },
+  "RNJCfif1dPY": {
+    "overview_cn": "在斯坦福创业学院的这场演讲中，AI 先驱吴恩达（Andrew Ng）探讨了为什么执行速度是创业成功的终极预测指标、向智能体 AI 工作流的转变，以及 AI 如何重塑工程师和产品经理的角色。",
+    "overview_en": "In this Stanford Startup School lecture, AI pioneer Andrew Ng discusses why execution speed is the ultimate predictor of startup success, the shift toward agentic AI workflows, and how AI is transforming the roles of engineers and product managers.",
+    "timeline": [
+      {
+        "time": "00:01:03",
+        "en": "The AI Stack: Why the biggest opportunities are in the application layer",
+        "cn": "AI 技术栈：为什么最大的机会在应用层"
+      },
+      {
+        "time": "00:02:22",
+        "en": "Agentic AI: Moving from zero-shot prompting to iterative workflows",
+        "cn": "智能体 AI：从零样本提示转向迭代工作流"
+      },
+      {
+        "time": "00:04:53",
+        "en": "Concrete Ideas vs. Vague Ideas: Why specificity buys you speed",
+        "cn": "具体想法 vs. 模糊想法：为什么明确性可以换取速度"
+      },
+      {
+        "time": "00:07:18",
+        "en": "The Power of the 'Expert Gut' in rapid decision making",
+        "cn": "专家直觉在快速决策中的威力"
+      },
+      {
+        "time": "00:09:57",
+        "en": "Building Prototypes: 10x faster with AI coding assistants",
+        "cn": "构建原型：利用 AI 编程助手实现 10 倍增速"
+      },
+      {
+        "time": "00:11:28",
+        "en": "Move Fast and Be Responsible: The new engineering mantra",
+        "cn": "快速行动且负责任：新的工程准则"
+      },
+      {
+        "time": "00:13:26",
+        "en": "One-Way vs. Two-Way Doors: Rethinking software architecture costs",
+        "cn": "单向门 vs. 双向门：重新思考软件架构成本"
+      },
+      {
+        "time": "00:15:24",
+        "en": "The Controversial Opinion: Everyone in every role should learn to code",
+        "cn": "有争议的观点：每个职位的每个人都应该学习编程"
+      },
+      {
+        "time": "00:17:23",
+        "en": "The Shift in PM-to-Engineer Ratios: PMs as the new bottleneck",
+        "cn": "PM 与工程师比例的转变：PM 成为新的瓶颈"
+      },
+      {
+        "time": "00:18:52",
+        "en": "Product Feedback Portfolio: From expert gut to AB testing",
+        "cn": "产品反馈组合：从专家直觉到 AB 测试"
+      },
+      {
+        "time": "00:23:00",
+        "en": "The AI Building Blocks: Combinatorial innovation in AI startups",
+        "cn": "AI 积木：AI 创业中的组合式创新"
+      },
+      {
+        "time": "00:28:12",
+        "en": "Debunking Hype: Extinction risks and the 'Wiping Out Startups' narrative",
+        "cn": "揭穿炒作：人类灭绝风险与“消灭创业公司”的叙述"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Agentic AI Workflow / 智能体 AI 工作流",
+        "desc": "吴恩达强调，传统的 LLM 使用方式（一次性输出）限制了模型潜力。“智能体工作流”模拟人类的写作过程：规划、搜索、草拟、批判、修订。这种循环虽然速度较慢，但能显著提升复杂任务的成功率。"
+      },
+      {
+        "title": "The Application Layer Advantage / 应用层优势",
+        "desc": "尽管算力和基础模型公司吸睛无数，但应用层必须产生足够的收入来支撑整个底层架构。应用层拥有大量“空白地带”，创业者可以通过组合不同的 AI 积木构建独特价値。"
+      },
+      {
+        "title": "One-Way vs. Two-Way Doors / 决策的单双向门",
+        "desc": "由于 AI 编程助手将构建成本降低了10 倍以上，许多曾经被视为“单向门”（不可逆）的决策现在变成了“双向门”（可轻松重做）。这意味着创业者可以更大胆地实验并快速推翻重来。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Execution speed is the strongest predictor of a startup's odds of success.",
+        "cn": "执行速度是预测创业成功率的最强指标。"
+      },
+      {
+        "en": "The bottleneck has shifted from engineering to product management and user feedback.",
+        "cn": "瓶颈已从工程开发转移到了产品管理和用户反馈。"
+      },
+      {
+        "en": "Vague ideas are usually right but useless; concrete ideas buy you the speed to be proven wrong quickly.",
+        "cn": "模糊的想法通常是对的但没用；具体的想法能让你获得快速试错的速度。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Agentic AI",
+        "en": "AI systems that use iterative loops to plan, critique, and improve their own output.",
+        "cn": "智能体 AI：使用迭代循环来规划、批判并改进自身输出的 AI 系统。"
+      },
+      {
+        "word": "Concrete Idea",
+        "en": "An idea specified in enough detail that an engineer can build it immediately.",
+        "cn": "具体想法：细节明确到足以让工程师立即着手构建的想法。"
+      },
+      {
+        "word": "Two-Way Door",
+        "en": "A decision that can be reversed or changed relatively cheaply if it proves wrong.",
+        "cn": "双向门：如果证明是错误的，可以以较低成本逆转或更改的决策。"
+      },
+      {
+        "word": "Product Overhang",
+        "en": "The gap between existing technology capabilities and the actual products built to use them.",
+        "cn": "产品滩后：现有技术能力与利用这些能力的实际产品之间的差距。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Pivot on a dime.",
+        "cn": "迅速转型（指在极小空间/时间内改变方向）。"
+      },
+      {
+        "en": "Wander the idea maze.",
+        "cn": "在想法迷宫中探索（指深入思考并验证创业点子）。"
+      },
+      {
+        "en": "Execution speed.",
+        "cn": "执行速度。"
+      }
+    ],
+    "reflection_questions": [
+      "你的创业点子是一个足以让工程师下午就开始动工的“具体想法”吗？",
+      "在 AI 让编程变廉价的时代，你如何通过“专家直觉”来缩短产品反馈周期？"
+    ],
+    "closing_note": "不要害怕 AI 取代工作，要害怕那些比你更懂得利用 AI 来指挥计算机的人。"
+  },
+  "_BRhRh7mOX0": {
+    "overview_cn": "本期视频由 Learn Prompting 和 HackAPrompt 创始人 Sander Schulhoff 主讲，深入探讨了提示工程（Prompt Engineering）的持续相关性及其在生成式AI安全中的挑战。内容涵盖了提示工程的起源、两种主要类型、以及高级提示技术，如链式思考和角色提示的实际效果，并强调了AI红队（AI Red Teaming）在确保AI系统安全方面的重要性。",
+    "overview_en": "This video, presented by Sander Schulhoff (founder of Learn Prompting and HackAPrompt), delves into the enduring relevance of prompt engineering and the significant challenges in securing generative AI. It covers the origins of prompt engineering, its two main types, and advanced techniques like Chain of Thought and the controversial effectiveness of role prompting, while highlighting the importance of AI Red Teaming for system security.",
+    "timeline": [
+      {
+        "time": "00:00",
+        "cn": "引言与主讲人背景介绍",
+        "en": "Introduction and speaker's background (Learn Prompting, HackAPrompt)"
+      },
+      {
+        "time": "02:15",
+        "cn": "核心观点：提示工程仍重要，GenAI安全难题",
+        "en": "Key takeaways: Prompt engineering is still relevant, GenAI security is difficult"
+      },
+      {
+        "time": "04:30",
+        "cn": "从“外交”游戏到提示工程的缘起",
+        "en": "From 'Diplomacy' game to the origin of prompt engineering"
+      },
+      {
+        "time": "07:00",
+        "cn": "Learn Prompting 的发展与影响力",
+        "en": "Growth and impact of Learn Prompting (first open-source guide)"
+      },
+      {
+        "time": "09:15",
+        "cn": "HackAPrompt：首个提示注入竞赛",
+        "en": "HackAPrompt: The first prompt injection competition"
+      },
+      {
+        "time": "11:00",
+        "cn": "提示与提示工程的基础定义",
+        "en": "Fundamental definitions of prompt and prompt engineering"
+      },
+      {
+        "time": "13:45",
+        "cn": "提示工程的重要性：提升或降低准确性",
+        "en": "Importance of prompt engineering: Boosting or hurting accuracy"
+      },
+      {
+        "time": "16:00",
+        "cn": "提示工程的起源与术语演变",
+        "en": "Origin of prompt engineering and evolution of terminology"
+      },
+      {
+        "time": "19:00",
+        "cn": "两类提示工程：对话式与常规（开发者）",
+        "en": "Two types of prompt engineering: Conversational vs. normal (developer-focused)"
+      },
+      {
+        "time": "22:30",
+        "cn": "高级提示工程：The Prompt Report 介绍",
+        "en": "Advanced prompt engineering: Introduction to The Prompt Report"
+      },
+      {
+        "time": "26:00",
+        "cn": "角色提示（Role Prompting）的争议与实际效果",
+        "en": "Controversy and actual effectiveness of Role Prompting"
+      },
+      {
+        "time": "32:00",
+        "cn": "思维诱导技术：链式思考（Chain of Thought）",
+        "en": "Thought inducement techniques: Chain of Thought prompting"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "提示工程的持续相关性",
+        "desc": "尽管有人认为提示工程已过时，但它仍然是提升AI模型准确性、构建复杂多提示系统和Agent的核心组成部分，对系统性能影响巨大。"
+      },
+      {
+        "title": "两类提示工程",
+        "desc": "分为对话式提示工程（如与ChatGPT交互）和常规提示工程（为自动化系统设计单一高效的提示）。前者侧重迭代对话，后者追求一次性提示的极致优化。"
+      },
+      {
+        "title": "角色提示的“都市传说”",
+        "desc": "研究表明，在需要精确答案的任务中，如数学问题，给AI设定“数学教授”等角色并不能显著提高其准确性，甚至可能不如“傻瓜”角色。但在开放式、表达性任务中仍有价值。"
+      },
+      {
+        "title": "链式思考（Chain of Thought）",
+        "desc": "一种通过要求AI分步展示思考过程来提高其在逻辑和数学任务上准确性的技术。尽管AI的内部推理过程可能与外部展示不符，但这种方法依然非常有效。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Prompting and prompt engineering are still highly relevant for improving AI model performance and building robust systems.",
+        "cn": "提示和提示工程对于提升AI模型性能和构建健壮系统仍然至关重要。"
+      },
+      {
+        "en": "Securing generative AI systems is an incredibly difficult problem, requiring a deeper understanding beyond just prompting.",
+        "cn": "确保生成式AI系统的安全是一个极其困难的问题，需要超越提示工程的更深层理解。"
+      },
+      {
+        "en": "Role prompting is largely ineffective for accuracy-based tasks, but can still be useful for open-ended, expressive tasks.",
+        "cn": "角色提示在基于准确性的任务中基本无效，但在开放式、表达性任务中仍有其用处。"
+      },
+      {
+        "en": "Chain of Thought prompting significantly boosts accuracy by encouraging models to 'think step by step,' even if their internal reasoning differs from the output.",
+        "cn": "链式思考提示通过鼓励模型“逐步思考”来显著提高准确性，即便其内部推理过程与输出不完全一致。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Prompt Engineering",
+        "en": "The process of improving your prompt to a generative AI to achieve better or more accurate outputs.",
+        "cn": "提示工程：优化向生成式AI发送的提示，以获得更好或更准确输出的过程。"
+      },
+      {
+        "word": "AI Red Teaming",
+        "en": "A practice involving intentionally trying to find vulnerabilities and weaknesses in AI systems, often through prompt injection or adversarial attacks.",
+        "cn": "AI红队：通过提示注入或对抗性攻击等方式，有意地寻找AI系统中的漏洞和弱点的实践。"
+      },
+      {
+        "word": "Prompt Injection",
+        "en": "A type of attack where malicious prompts are used to override or manipulate the intended behavior of an AI model.",
+        "cn": "提示注入：一种攻击类型，通过恶意提示来覆盖或操纵AI模型的预期行为。"
+      },
+      {
+        "word": "Chain of Thought Prompting",
+        "en": "A technique that encourages the AI to output its reasoning steps before providing a final answer, often leading to improved accuracy.",
+        "cn": "链式思考提示：一种技术，鼓励AI在给出最终答案之前输出其推理步骤，通常能提高准确性。"
+      },
+      {
+        "word": "Role Prompting",
+        "en": "Assigning a specific persona or role to the AI (e.g., 'You are a math professor') to influence its response style or perceived capability.",
+        "cn": "角色提示：为AI分配特定角色或身份（例如，“你是一位数学教授”），以影响其回应风格或感知能力。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "This system is only as good as its worst prompt.",
+        "cn": "一个系统的好坏取决于它最差的那个提示。"
+      },
+      {
+        "en": "The model is lying to you.",
+        "cn": "模型在对你撒谎。（指AI在链式思考中展示的推理过程可能并非其真实内部机制）"
+      },
+      {
+        "en": "It's a bit of a mystery.",
+        "cn": "这有点像个谜。（描述提示工程中非确定性和难以预测的现象）"
+      }
+    ],
+    "reflection_questions": [
+      "在你的日常工作中，你更常使用对话式还是常规的提示工程方法？这两种方法分别解决了你哪些具体问题？",
+      "考虑到角色提示在准确性任务中的局限性，你将如何调整自己的提示策略，以更有效地利用AI在不同类型的任务中发挥作用？",
+      "你认为AI红队技术对于未来AI系统的安全和可靠性有多重要？作为开发者或用户，我们能如何参与其中？"
+    ],
+    "closing_note": "持续学习和实践提示工程，结合对AI安全挑战的认识，将助你更好地驾驭生成式AI的强大能力。"
+  },
+  "CBm8aJKRDkk": {
+    "overview_cn": "这场对谈围绕 prompt injection、AI 红队测试，以及为什么 LLM 的对抗鲁棒性至今仍基本无解展开。Sander Schulhoff 认为，当前主流评测方法本身就有问题，人类攻击者依然比自动化系统更有效，而如今的 agent 系统很多时候反而比单纯模型更容易被利用。",
+    "overview_en": "This talk examines prompt injection, AI red teaming, and why adversarial robustness for LLMs remains largely unsolved. Sander Schulhoff argues that current evaluation methods are broken, humans still outperform automated attackers, and today's agentic systems are often easier—not harder—to exploit.",
+    "timeline": [
+      {
+        "time": "00:06",
+        "en": "Introduction to Sander Schulhoff and his red teaming background",
+        "cn": "介绍 Sander Schulhoff 的背景，以及其在 AI 红队和 prompt 研究中的经历"
+      },
+      {
+        "time": "03:55",
+        "en": "Why current adversarial robustness evaluations are broken",
+        "cn": "为什么当前对抗鲁棒性评测方式本身就是失真的"
+      },
+      {
+        "time": "04:47",
+        "en": "Humans broke everything; adaptive systems broke about 90%",
+        "cn": "人类攻击者几乎全部攻破；自适应自动系统也能攻破约 90%"
+      },
+      {
+        "time": "05:33",
+        "en": "HackAPrompt and large-scale collection of prompt injection attacks",
+        "cn": "HackAPrompt 如何通过大规模竞赛收集 prompt injection 攻击数据"
+      },
+      {
+        "time": "07:26",
+        "en": "Old attack techniques still work on new models",
+        "cn": "早期老攻击技巧在新模型上依然持续有效"
+      },
+      {
+        "time": "09:11",
+        "en": "Little real progress on solving prompt injection and jailbreaking",
+        "cn": "在 prompt injection 和越狱问题上，真实进展其实非常有限"
+      },
+      {
+        "time": "10:26",
+        "en": "Agents are the big promise, but insecurity blocks deployment",
+        "cn": "智能体是行业最大承诺，但安全问题正在阻断其真正落地"
+      },
+      {
+        "time": "12:24",
+        "en": "Agent red teaming suggests agents may be easier to exploit",
+        "cn": "最新 agent 红队结果表明：智能体很多时候反而更容易被攻击"
+      },
+      {
+        "time": "15:39",
+        "en": "Risk-reward tradeoff: insecure systems are still useful enough to deploy",
+        "cn": "现实是：哪怕不安全，这些系统仍因高收益而被继续使用"
+      },
+      {
+        "time": "16:27",
+        "en": "Practical prompting advice: few-shot prompting remains his favorite technique",
+        "cn": "回到实操层面：他最常用、最偏好的依旧是 few-shot prompting"
+      },
+      {
+        "time": "18:31",
+        "en": "Prompt report findings: no prompting advice is universally true",
+        "cn": "《Prompt Report》的结论之一：几乎没有哪条提示建议是永远成立的"
+      },
+      {
+        "time": "29:41",
+        "en": "AI psychosis and emerging mental health risks from human-AI interaction",
+        "cn": "AI psychosis 与人机交互引发的心理健康风险开始显现"
+      },
+      {
+        "time": "37:07",
+        "en": "Future outlook: current GPT-style architectures likely won't solve adversarial security",
+        "cn": "未来判断：现有 GPT/Transformer 路线大概率无法真正解决对抗安全问题"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Why prompt injection feels unsolvable",
+        "desc": "与传统软件漏洞不同，prompt injection 不是修一次补丁就能结束的问题。你更像是在修改一个统计意义上的“脑子”，而老攻击方式往往会以新形式反复出现。"
+      },
+      {
+        "title": "Agents expand the attack surface / 智能体扩大攻击面",
+        "desc": "Agent 要读取外部数据、调用工具，这会显著扩大攻击面。现实里，一个看似普通的日历邀请或网页内容，都可能变成新的指令通道。"
+      },
+      {
+        "title": "System-level controls help, but don't fully solve it",
+        "desc": "先根据用户任务判定允许调用哪些工具，再把 agent 的权限限制在这组工具内。这个方向是有效的，但一旦任务天然同时需要读、写、搜索、发送等多种权限，风险就重新出现。这更像“缩小风险”，不是“解决问题”。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Current prompt injection defenses are far weaker than benchmark results suggest.",
+        "cn": "当前 prompt injection 防御能力，远没有 benchmark 展示得那么强。"
+      },
+      {
+        "en": "Humans remain the strongest attackers against modern LLM systems.",
+        "cn": "面对现代 LLM 系统，人类依然是最强的攻击者。"
+      },
+      {
+        "en": "Agentic systems often introduce more attack surface rather than more safety.",
+        "cn": "智能体系统通常带来的是更大的攻击面，而不是更高的安全性。"
+      },
+      {
+        "en": "Prompt injection is not just an implementation bug; it may be tied to the architecture itself.",
+        "cn": "Prompt injection 不只是工程 bug，它可能与当前模型架构本身相关。"
+      },
+      {
+        "en": "In practical prompting, examples are often more useful than abstract instructions.",
+        "cn": "在实际提示工程中，示例往往比抄象说明更有用。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Prompt injection",
+        "en": "An attack where external or user-provided text manipulates the model into ignoring its intended instructions.",
+        "cn": "一种通过用户输入或外部内容操控模型、使其偏离原有指令的攻击方式。"
+      },
+      {
+        "word": "Red teaming",
+        "en": "Deliberately attacking a model or system to discover vulnerabilities before real attackers do.",
+        "cn": "主动模拟攻击者去测试模型或系统，以便在真实攻击前发现漏洞。"
+      },
+      {
+        "word": "Adversarial robustness",
+        "en": "How well a model resists manipulation, jailbreaking, or malicious prompting under attack.",
+        "cn": "模型在遇到恶意提示、越狱或操控时维持正确行为的能力。"
+      },
+      {
+        "word": "Few-shot prompting",
+        "en": "Showing the model examples of desired input-output behavior so it can imitate the pattern.",
+        "cn": "通过提供示例输入输出，让模型模价你希望的行为模式。"
+      },
+      {
+        "word": "Meta-prompting",
+        "en": "Using AI to improve or generate prompts, often by optimizing against some task objective.",
+        "cn": "让 AI 帮你生成或改写 prompt，通常围绕某个任务目标做优化。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Humans broke everything.",
+        "cn": "人类攻击者把所有系统都攻破了。"
+      },
+      {
+        "en": "The evaluation setup is broken.",
+        "cn": "问题不只是模型，连评测方式本身都有问题。"
+      },
+      {
+        "en": "Agents may actually be easier to exploit.",
+        "cn": "智能体系统实际上可能更容易被利用。"
+      },
+      {
+        "en": "You can't really patch a brain.",
+        "cn": "你没法像修补程序那样去修补一颗“脑子”。"
+      },
+      {
+        "en": "Examples are often the strongest lever.",
+        "cn": "示例往往是最有效的杠杠。"
+      }
+    ],
+    "reflection_questions": [
+      "如果一个 AI 系统必须读取外部内容并拥有写操作权限，你会如何重新定义它的可用边界？",
+      "面对“问题暂时无解但商业上仍値得部署”的技术，你会如何做风险—收益判断？"
+    ],
+    "closing_note": "整个行业直到现在仍没有一条真正令人信服的路径，能够把对抗安全问题解决掉，尤其是在 agents 场景下更是如此。在架构或系统设计发生根本变化之前，AI 安全更像一个持续漂移的目标，而不是一个可以宣布“已经解决”的层。"
+  },
+  "IfW1FMDkw4k": {
+    "overview_cn": "Paweł Huryn 与 Akash Casshyap 合作带来了一场 AI 产品管理大师课，内容涵盖高阶提示词工程、PRD 撰写、模型微调、RAG 架构以及智能体工作流。",
+    "overview_en": "Paweł Huryn joins Akash Casshyap to provide a masterclass on AI Product Management, covering advanced prompting, PRD development, fine-tuning, RAG architecture, and agentic workflows.",
+    "timeline": [
+      {
+        "time": "00:01:31",
+        "en": "Why AI PMs earn more: Combining business strategy with technical depth",
+        "cn": "为什么 AI PM 薪资更高：商业策略与技术深度的结合"
+      },
+      {
+        "time": "00:03:06",
+        "en": "Advanced Prompting: Context, personas, and step-by-step instructions",
+        "cn": "高阶提示词：提供上下文、角色设定及分步指令"
+      },
+      {
+        "time": "00:08:23",
+        "en": "Prompt Hacks: Using financial rewards ($1,000) to improve LLM output",
+        "cn": "提示词技巧：利用经济奖励（1,000 美元）提升 LLM 输出质量"
+      },
+      {
+        "time": "00:12:36",
+        "en": "The AI PRD: Aligning AI initiatives with business strategy and guardrails",
+        "cn": "AI PRD：将 AI 举措与业务战略及安全护栏对齐"
+      },
+      {
+        "time": "00:20:01",
+        "en": "Fine-tuning vs. RAG: When to use internal weights vs. external data",
+        "cn": "微调 vs. RAG：何时使用内部权重，何时使用外部数据"
+      },
+      {
+        "time": "00:24:29",
+        "en": "Live Demo: Fine-tuning GPT-4o mini to adopt a specific brand voice (Yoda)",
+        "cn": "现场演示：微调 GPT-4o mini 以采用特定品牌语气（尤达大师）"
+      },
+      {
+        "time": "00:32:00",
+        "en": "RAG Architecture: Using Pinecone vector stores and n8n for document indexing",
+        "cn": "RAG 架构：使用 Pinecone 向量数据库和 n8n 进行文档索引"
+      },
+      {
+        "time": "00:49:25",
+        "en": "Building a RAG-powered chatbot with n8n webhooks and Lovable",
+        "cn": "利用 n8n Webhook 和 Lovable 构建 RAG 驱动的聊天机器人"
+      },
+      {
+        "time": "00:54:21",
+        "en": "Prompting for RAG: Instructing models to cite sources from retrieved chunks",
+        "cn": "RAG 提示词：指令模型根据检索到的片段引用来源"
+      },
+      {
+        "time": "01:07:23",
+        "en": "MCP (Model Context Protocol): Standardizing how agents talk to systems like Figma and Jira",
+        "cn": "MCP（模型上下文协议）：标准化智能体与 Figma、Jira 等系统的交互"
+      },
+      {
+        "time": "01:13:01",
+        "en": "Live Demo: Using Claude and MCP to generate Jira stories from Figma designs",
+        "cn": "现场演示：使用 Claude 和 MCP 根据 Figma 设计图生成 Jira 用户故事"
+      },
+      {
+        "time": "01:19:07",
+        "en": "AI Agents: Building a 'Deep Market Researcher' that plans and delegates tasks",
+        "cn": "AI 智能体：构建一个能够规划并分发任务的“深度市场调研员”"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "AI PM 技能金字塔",
+        "desc": "AI 产品经理的技能分为四个层级：1. 高阶提示词；2. AI 专用产品需求文档；3. 技术架构理解（微调与 RAG）；4. 智能体协调。PM 无需写代码，但必须理解如何通过微调降低 Token 成本，或通过 RAG 处理百万级文档。"
+      },
+      {
+        "title": "Fine-tuning vs. RAG 的抉择",
+        "desc": "微调通过调整模型权重来内化知识和风格，适用于品牌语气或降低长 Prompt 成本。RAG 将模型连接到外部实时数据库，适用于需要引用来源、处理动态信息或海量文档的场景。两者常结合使用以构建高质量“数字分身”。"
+      },
+      {
+        "title": "Agent Orchestration with MCP / 使用 MCP 进行智能体编排",
+        "desc": "模型上下文协议（MCP）解决了智能体与外部工具集成难的问题。通过 MCP，智能体能自动理解 Figma 或 Jira 的 API 权限和操作方法，实现从设计图到用户故事的自动化闭环。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "AI PMs must move beyond basic prompting to building alignment via structured AI PRDs and technical evaluation metrics.",
+        "cn": "AI PM 必须超越基础提示词，转向通过结构化的 AI PRD 和技术评估指标来建立共识。"
+      },
+      {
+        "en": "RAG is essential for systems requiring citations and massive dataset access, while Fine-tuning is best for style and cost efficiency.",
+        "cn": "RAG 对于需要引用和访问海量数据集的系统至关重要，而微调最适合风格定制和成本优化。"
+      },
+      {
+        "en": "The role of the PM is evolving into an 'Agent Orchestrator' who defines workflows and success criteria for autonomous swarms.",
+        "cn": "PM 的角色正在演变为“智能体编排者”，负责定义自主集群的工作流和成功标准。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "RAG (Retrieval-Augmented Generation)",
+        "en": "A technique to give LLMs access to specific, up-to-date data without re-training.",
+        "cn": "检索增强生成：一种无需重新训练即可让 LLM 访问特定最新数据的技术。"
+      },
+      {
+        "word": "Fine-tuning",
+        "en": "The process of training a pre-trained model on a specialized dataset to adjust its parameters.",
+        "cn": "微调：在专门数据集上训练预训练模型以调整其参数的过程。"
+      },
+      {
+        "word": "MCP (Model Context Protocol)",
+        "en": "An open standard that enables models to connect to data sources and tools seamlessly.",
+        "cn": "模型上下文协议：一种使模型能够无缝连接到数据源和工具的开放标准。"
+      },
+      {
+        "word": "Vector Database",
+        "en": "A database that stores information as numerical vectors for semantic search.",
+        "cn": "向量数据库（如 Pinecone）：将信息存储为数字向量以进行语义搜索的数据库。"
+      },
+      {
+        "word": "Agentic Workflow",
+        "en": "A sequence of steps where an AI model plans, executes, and iterates using tools.",
+        "cn": "智能体工作流：AI 模型利用工具进行规划、执行和迭代的一系列步骤。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Don't build AI for AI's sake.",
+        "cn": "不要为了 AI 而做 AI。"
+      },
+      {
+        "en": "Perform this task on a champion level.",
+        "cn": "以顶级水准完成此任务（用于提示词奖励技巧）。"
+      },
+      {
+        "en": "Combine business skills with technical knowledge.",
+        "cn": "将商业技能与技术知识相结合。"
+      }
+    ],
+    "reflection_questions": [
+      "在你的产品中，哪些风格化的输出可以通过 Fine-tuning 降低长期的 Token 成本？",
+      "如果你有百万级用户文档，你该如何设计 RAG 的分块（Chunking）策略以保证搜索精度？"
+    ],
+    "closing_note": "AI PM 市场正在呈指数级增长；目标是成为商业成果与技术可行性之间的“桥梁”。"
+  },
+  "0v8U-0aSb-g": {
+    "overview_cn": "本期视频展示了如何利用 Claude Code 等AI工具构建个人操作系统（Personal Operating System, POS），实现工作流程的全面自动化。通过连接日历、CRM、社交媒体等数据源，AI能自动生成每日计划、分析客户健康度、甚至辅助产品开发，将AI从辅助工具升级为高效的“数字执行助理”。看完后，你将了解如何利用AI整合信息、提升决策效率，并开始思考构建自己的自动化工作流。",
+    "overview_en": "This video demonstrates building a Personal Operating System (POS) with AI tools like Claude Code to automate various aspects of work life. By integrating data from calendars, CRMs, and social media, AI can generate daily plans, analyze customer health, and even assist in product development, transforming AI from a mere tool into a powerful 'digital executive assistant.' You'll learn how AI can consolidate information, enhance decision-making, and inspire you to build your own automated workflows.",
+    "timeline": [
+      {
+        "time": "00:00",
+        "cn": "介绍 Claude Code 及其构建个人操作系统的潜力",
+        "en": "Introduction to Claude Code and its potential for building personal operating systems"
+      },
+      {
+        "time": "02:00",
+        "cn": "展示每日计划命令：AI如何整合多源数据生成计划",
+        "en": "Demonstration of the daily plan command: how AI integrates multi-source data to generate a plan"
+      },
+      {
+        "time": "04:00",
+        "cn": "Cursor 应用作为个人操作系统的开发环境",
+        "en": "Cursor app as the development environment for the personal operating system"
+      },
+      {
+        "time": "06:00",
+        "cn": "通过 MCP 服务器实现与外部 API 的连接",
+        "en": "Connecting to external APIs via MCP servers for data integration"
+      },
+      {
+        "time": "08:00",
+        "cn": "语音转文本工具 Whisper Flow 的应用与模式定制",
+        "en": "Application of voice-to-text tool Whisper Flow and its mode customization"
+      },
+      {
+        "time": "10:00",
+        "cn": "每日计划的输出与信息提炼，包括敏感信息脱敏",
+        "en": "Output of the daily plan and information extraction, including redaction of sensitive data"
+      },
+      {
+        "time": "13:00",
+        "cn": "AI 整合 YouTube、LinkedIn、新闻简报等外部情报",
+        "en": "AI integrating external intelligence from YouTube, LinkedIn, and newsletters"
+      },
+      {
+        "time": "16:00",
+        "cn": "Dex 开源工具与技能（Skills）的构建及 X-ray 功能",
+        "en": "Dex open-source tool, building skills, and the X-ray feature for transparency"
+      },
+      {
+        "time": "20:00",
+        "cn": "账户健康评分技能的演示与主动式客户管理",
+        "en": "Demonstration of the account health score skill and proactive customer management"
+      },
+      {
+        "time": "22:00",
+        "cn": "利用 AI 搜索 GitHub repo 并生成产品需求文档（PRD）",
+        "en": "Using AI to search GitHub repos and generate Product Requirement Documents (PRDs)"
+      },
+      {
+        "time": "26:00",
+        "cn": "AI 作为“米其林主厨”：品味与判断的重要性",
+        "en": "AI as a 'Michelin head chef': the importance of taste and judgment"
+      },
+      {
+        "time": "28:00",
+        "cn": "AI 作为“陪练伙伴”：Claude MD 文件与自我审视",
+        "en": "AI as a 'sparring partner': Claude MD file and self-reflection"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "个人操作系统 (Personal Operating System, POS)",
+        "desc": "将AI视为一个高度定制化的数字执行助理，通过整合个人所有数据源（日历、CRM、社交媒体、文档等），实现工作流程的自动化、信息聚合与智能决策辅助，从而构建一个专属的工作中枢。"
+      },
+      {
+        "title": "AI 技能 (AI Skills)",
+        "desc": "用户可根据特定需求创建的自动化命令或脚本。这些技能通过自然语言触发，能执行复杂任务，如生成每日计划、分析数据、撰写邮件等，并可相互组合，实现更高级的自动化。"
+      },
+      {
+        "title": "MCP 服务器 (Multi-Contextual Prompting Server)",
+        "desc": "一种用于连接 AI 与外部 API 的机制。它能更好地为 AI 提供上下文和防护栏（guard rails），使 AI 更有效地理解 API 文档并进行数据交互，从而构建更稳定、更强大的集成。"
+      },
+      {
+        "title": "Claude MD 文件与 Session Start Hooks",
+        "desc": "Claude MD 文件是 AI 的核心配置文件，定义了其身份、行为和原则。Session Start Hooks 则是每次新会话开始时自动注入上下文的机制，确保 AI 始终遵循预设的优先级和学习经验，实现上下文的持续性与智能累积。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "AI can be leveraged to build a powerful personal operating system that automates and integrates various aspects of your work life.",
+        "cn": "AI 可以被用来构建强大的个人操作系统，自动化并整合你工作生活的各个方面。"
+      },
+      {
+        "en": "Treating AI as a collaborative partner, rather than just a tool, unlocks deeper value and more sophisticated outputs.",
+        "cn": "将 AI 视为协作伙伴而非单纯工具，能够发掘更深层价值并获得更复杂的输出。"
+      },
+      {
+        "en": "Human 'taste' and judgment remain crucial for refining AI-generated outputs and ensuring quality, preventing 'infinite slop.'",
+        "cn": "人类的“品味”和判断力对于优化 AI 生成内容、确保质量至关重要，避免产生“无限的废料”。"
+      },
+      {
+        "en": "Custom skills and contextual data integration allow AI to compound its brilliance over time, becoming increasingly valuable.",
+        "cn": "定制化技能和上下文数据整合能让 AI 的智能随时间累积，变得越来越有价值。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Personal Operating System (POS)",
+        "en": "A highly customized AI-driven system that integrates various tools and data sources to automate and manage an individual's work and information flow.",
+        "cn": "个人操作系统：一个高度定制化的 AI 驱动系统，整合各种工具和数据源，以自动化和管理个人的工作和信息流。"
+      },
+      {
+        "word": "Claude Code",
+        "en": "An AI platform (specifically Anthropic's Claude) used to develop and automate complex workflows, often without traditional coding.",
+        "cn": "Claude Code：一个 AI 平台（特指 Anthropic 的 Claude），用于开发和自动化复杂工作流，通常无需传统编程。"
+      },
+      {
+        "word": "Cursor",
+        "en": "A code editor and development environment that integrates AI capabilities, used here as the interface for building a POS.",
+        "cn": "Cursor：一个集成 AI 功能的代码编辑器和开发环境，在此视频中用作构建个人操作系统的界面。"
+      },
+      {
+        "word": "MCP Server",
+        "en": "Multi-Contextual Prompting Server; a method for integrating AI with external APIs, providing better guardrails and context for AI interactions.",
+        "cn": "多上下文提示服务器：一种将 AI 与外部 API 集成的方法，为 AI 交互提供更好的防护和上下文。"
+      },
+      {
+        "word": "Dex",
+        "en": "An open-source tool or framework for building and managing AI skills and automations, designed to help users get work done more effectively and learn AI fluency.",
+        "cn": "Dex：一个开源工具或框架，用于构建和管理 AI 技能和自动化，旨在帮助用户更有效地完成工作并提高 AI 流畅度。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Everything compounds.",
+        "cn": "一切都会累积/产生复利效应。"
+      },
+      {
+        "en": "Malleable software.",
+        "cn": "可塑性软件。"
+      },
+      {
+        "en": "Running around like a headless chicken.",
+        "cn": "像无头苍蝇一样乱转。"
+      },
+      {
+        "en": "We're all Michelin head chefs of restaurants.",
+        "cn": "我们都像是米其林星级餐厅的主厨。"
+      }
+    ],
+    "reflection_questions": [
+      "在你的日常工作中，有哪些重复性任务或信息碎片化问题可以通过构建个人AI技能来解决？",
+      "如何平衡 AI 自动化带来的效率提升与人类在判断、品味和创造性方面的独特价值？",
+      "如何利用 AI 更好地管理个人知识库和学习过程，使其像视频中提到的“living files”一样不断进化？"
+    ],
+    "closing_note": "从今天开始，识别你工作中一个痛点，并思考如何用 AI 技能将其自动化，迈出构建个人操作系统第一步。"
+  },
+  "PQU9o_5rHC4": {
+    "overview_cn": "Anthropic Claude Code 的创建者 Boris Cherny 讨论了这一命令行工具的偶然演变、向“智能体优先”开发的转变，以及为什么手动编程时代正在迅速终结。",
+    "overview_en": "Boris Cherny, the creator of Claude Code at Anthropic, discusses the accidental evolution of the CLI tool, the shift toward 'agent-first' development, and why the era of manual coding is rapidly ending.",
+    "timeline": [
+      {
+        "time": "00:00:00",
+        "en": "Advice to founders: Build for the model 6 months from now",
+        "cn": "给创业者的建议：为 6 个月后的模型进行开发"
+      },
+      {
+        "time": "00:01:56",
+        "en": "The surprise of the terminal: Starting as a prototype, staying as a CLI",
+        "cn": "终端的惊喜：从原型开始，最终保留为 CLI 形式"
+      },
+      {
+        "time": "00:02:48",
+        "en": "The accidental evolution of Claude Code from a simple API test app",
+        "cn": "Claude Code 从一个简单的 API 测试应用偶然演变而来"
+      },
+      {
+        "time": "00:05:24",
+        "en": "The 'AGI moment': Realizing the model's innate desire to use tools",
+        "cn": "“AGI 时刻”：意识到模型对使用工具的本能渴望"
+      },
+      {
+        "time": "00:07:57",
+        "en": "Product principle: Latent demand as the driver for features like Claude.md",
+        "cn": "产品原则：潜在需求是 Claude.md 等功能的驱动力"
+      },
+      {
+        "time": "00:10:34",
+        "en": "Minimalist engineering: Why Cherny uses VS Code over Vim",
+        "cn": "极简工程：为什么 Cherny 选择 VS Code 而非 Vim"
+      },
+      {
+        "time": "00:15:29",
+        "en": "Case study: Claude Code analyzing heap dumps to find memory leaks",
+        "cn": "案例研究： Claude Code 通过分析堆转储发现内存泄漏"
+      },
+      {
+        "time": "00:22:17",
+        "en": "Agent Topologies: Using swarms and uncorrelated context windows",
+        "cn": "智能体拓扑：使用集群和不相关的上下文窗口"
+      },
+      {
+        "time": "00:30:50",
+        "en": "Experimenting with form factors: Slack, GitHub, and IDE extensions",
+        "cn": "尝试不同形态：Slack、GitHub 及 IDE 扩展插件"
+      },
+      {
+        "time": "00:38:24",
+        "en": "The Bitter Lesson: General models will always beat specific ones",
+        "cn": "苦涩的教训：通用模型总是会击败特定模型"
+      },
+      {
+        "time": "00:40:36",
+        "en": "Anthropic productivity: 70-150% growth in PRs per engineer",
+        "cn": "Anthropic 的生产力：每位工程师的 PR 增长了70-150%"
+      },
+      {
+        "time": "00:45:30",
+        "en": "ASL-4 and recursive self-improvement: The next safety frontier",
+        "cn": "ASL-4 与递归自我改进：下一个安全前沿"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Build for the Future Model / 为未来的模型构建",
+        "desc": "Boris 建议不要针对今天的模型能力进行优化，而要针对 6 个月后的模型。这种策略避免了“脚手架”代码在下一代模型发布时变得冗余。"
+      },
+      {
+        "title": "Agent Swarms / 智能体集群",
+        "desc": "内部开发已转向递归模式。“妈妈 Claude”会根据任务难度派生多个子智能体进行并行研究或调试。这种“测试时计算”通过多个不相关的上下文窗口，极大地提升了解决复杂系统问题的能力。"
+      },
+      {
+        "title": "The Bitter Lesson / 苦涩的教训",
+        "desc": "Rich Sutton 的哲学：长期来看，利用通用计算优于人类设计的启发式方法。针对当前模型做的特定优化，往往会在下一代模型面前变得毫无意义。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Engineers should adopt a 'beginner mindset' and prioritize first-principles thinking over historical coding opinions.",
+        "cn": "工程师应保持“初学者心态”，优先考虑第一性原则，而非过往的编程见解。"
+      },
+      {
+        "en": "Scaffolding code should be treated as technical debt that will eventually be replaced by model improvements.",
+        "cn": "“脚手架”代码应被视为技术负债，最终会被模型的自我提升所取代。"
+      },
+      {
+        "en": "Productivity is now measured by how effectively an engineer can guide an agent through a plan, not by lines of code written.",
+        "cn": "现在的生产力衡量标准是工程师引导智能体执行计划的效果，而非编写的代码行数。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "CLI (Command Line Interface)",
+        "en": "The text-based interface used by Claude Code, chosen for its speed and lack of UI overhead.",
+        "cn": "命令行界面：Claude Code 使用的基于文本的界面，因其速度快且无 UI 开销而被选中。"
+      },
+      {
+        "word": "Latent Demand",
+        "en": "The product principle of making existing user behaviors easier rather than forcing new ones.",
+        "cn": "潜在需求：让用户现有的行为变得更简单，而非强迫其产生新行为的产品原则。"
+      },
+      {
+        "word": "Plan Mode",
+        "en": "A specific interaction style where the model strategizes before writing any code to prevent 'bug farms'.",
+        "cn": "计划模式：一种特定的交互方式，模型在编写代码前先制定策略以防止产生大量漏洞。"
+      },
+      {
+        "word": "The Bitter Lesson",
+        "en": "Rich Sutton's philosophy that leveraging general-purpose computation beats human-designed heuristics in the long run.",
+        "cn": "苦涩的教训：Rich Sutton 的哲学，认为长期来看，利用通用计算优于人类设计的启发式方法。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Don't build for the model of today.",
+        "cn": "不要为今天的模型构建。"
+      },
+      {
+        "en": "Trace the exponential.",
+        "cn": "追踪指数曲线（指随 AI 能力增长而演进）。"
+      },
+      {
+        "en": "The model just wants to use tools.",
+        "cn": "模型只想使用工具。"
+      }
+    ],
+    "reflection_questions": [
+      "如果你的代码库每两个月就要重写 80%，你会如何改变你对“代码质量”的定义？",
+      "在智能体可以并行调试的时代，你作为“人类架构师”在系统架构中的核心职责是什么？"
+    ],
+    "closing_note": "Claude Code 代表了从“辅助人类编程的工具”向“引导自主编程集群的人类意图”的转变。"
+  },
+  "hmtuvNfytjM": {
+    "overview_cn": "OpenAI CEO Sam Altman 探讨了从 GPT-4 到 GPT-5 的跨越、通往超智能的路径，以及 AI 将如何重新定义科学发现、医疗保健和全球社会契约。",
+    "overview_en": "OpenAI CEO Sam Altman discusses the leap from GPT-4 to GPT-5, the path to superintelligence, and how AI will redefine scientific discovery, healthcare, and the global social contract.",
+    "timeline": [
+      {
+        "time": "00:01:55",
+        "en": "GPT-4 is the 'dumbest' model you will ever use again.",
+        "cn": "GPT-4 将成为你以后用过的“最笨”的模型。"
+      },
+      {
+        "time": "00:05:08",
+        "en": "GPT-5's ability to create on-demand, instantaneous software (TI-83 Snake example).",
+        "cn": "GPT-5 具备按需、即时生成软件的能力（以 TI-83 贪吃蛇为例）。"
+      },
+      {
+        "time": "00:07:00",
+        "en": "The concept of 'Cognitive Time Under Tension' in the creative process.",
+        "cn": "创作过程中的“认知张力时长”概念。"
+      },
+      {
+        "time": "00:11:06",
+        "en": "Predicting AI-driven significant scientific discovery within two years.",
+        "cn": "预测两年内将出现由 AI 驱动的重大科学发现。"
+      },
+      {
+        "time": "00:13:12",
+        "en": "Defining Superintelligence: Better than the entire OpenAI brain trust.",
+        "cn": "定义超智能：表现优于整个 OpenAI 专家团。"
+      },
+      {
+        "time": "00:18:29",
+        "en": "Future of 'Real vs. Not Real' and cryptographic signing in 2030.",
+        "cn": "2030 年关于“真实 vs 虚假”及加密签名的未来。"
+      },
+      {
+        "time": "00:25:17",
+        "en": "The limiting factors: Compute, Energy, Data, and Algorithmic Design.",
+        "cn": "限制因素：算力、能源、数据与算法设计。"
+      },
+      {
+        "time": "00:33:03",
+        "en": "The 'messy' research path and learning from the Orion/GPT-4.5 project.",
+        "cn": "研究路径的曲折：从 Orion/GPT-4.5 项目中学习。"
+      },
+      {
+        "time": "00:38:22",
+        "en": "GPT-5's massive leap in accurate medical and health advice.",
+        "cn": "GPT-5 在精准医疗与健康建议方面的巨大跨越。"
+      },
+      {
+        "time": "00:44:06",
+        "en": "The future Social Contract: Sharing access to AI compute abundance.",
+        "cn": "未来的社会契约：共享充沛的 AI 算力资源。"
+      },
+      {
+        "time": "00:51:33",
+        "en": "The 'Sycophancy' mistake: Addressing models being too flattering to users.",
+        "cn": "“谄妈”错误：解决模型过度讨好用户的问题。"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "GPT-5 的推理跨越",
+        "desc": "GPT-5 的核心进化在于从“分钟级任务”向“千小时级任务”的迈进。它不再只是预测下一个词，而是通过极其强大的编程能力作为杆杆，实现对复杂逻辑和科学假设的即时构建与验证。"
+      },
+      {
+        "title": "重新定义超智能",
+        "desc": "Altman 将超智能定义为：不仅在学术测试中胜出，且能比整个 OpenAI 团队更好地进行 AI 研究，比他本人更好地管理公司。这标志着 AI 从工具演变为具备战略决策能力的实体。"
+      },
+      {
+        "title": "基础设施竞赛",
+        "desc": "算力建设已成为人类史上最昂贵的工程。目前最大的瓶颈是能源供应（GW 级别）。未来的终极形态是全自动化的“算力工厂”，实现从原材料到智能产出的闭环。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "GPT-5 shifts from a reactive chat box to a proactive integrated companion.",
+        "cn": "GPT-5 正在从被动对话框转变为主动集成的伴侣。"
+      },
+      {
+        "en": "Scientific discovery via AI is expected to become a reality by 2026-2027.",
+        "cn": "由 AI 驱动的科学发现预计将在 2026-2027 年间成为现实。"
+      },
+      {
+        "en": "Abundant compute access may become a fundamental part of the future social contract.",
+        "cn": "获取充沛的算力资源可能成为未来社会契约的基础组成部分。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Superintelligence",
+        "en": "AI that surpasses human experts across all cognitive and strategic domains.",
+        "cn": "超智能：在所有认知和战略领域超越人类专家的 AI。"
+      },
+      {
+        "word": "Synthetic Data",
+        "en": "Data created by AI to train models when human-generated data is exhausted.",
+        "cn": "合成数据：当人类生成的数据耗尽时，由 AI 生成用于训练模型的数据。"
+      },
+      {
+        "word": "Sycophancy",
+        "en": "The model's tendency to flatter the user, which OpenAI is actively mitigating in GPT-5.",
+        "cn": "谄妈性：模型讨好用户的倒向，OpenAI 正在 GPT-5 中积极缓解这一问题。"
+      },
+      {
+        "word": "Cognitive Time Under Tension",
+        "en": "The mental effort sustained during deep creative or analytical work.",
+        "cn": "认知张力时长：在深度创作或分析工作中持续的心智努力。"
+      },
+      {
+        "word": "Scaling Law",
+        "en": "The principle that model performance improves predictably with more compute and data.",
+        "cn": "Scaling Law：模型性能随算力和数据的增加而可预测地提升的原则。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Escape hatch for thinking.",
+        "cn": "思考的逃生舱（指代不愿深度思考）。"
+      },
+      {
+        "en": "Society is the superintelligence.",
+        "cn": "社会本身即是超智能。"
+      }
+    ],
+    "reflection_questions": [
+      "当 AI 能够独立完成“千小时级”的科学研究时，人类“直觉”的独特价値将体现在哪里？",
+      "你是否过度使用了 AI 作为“思考逃生舱”，从而削弱了你的认知张力？"
+    ],
+    "closing_note": "在构建“单人十亿美金公司”未来的同时，将“99% 成功 / 1% 灾难”的指针推向绝对安全。"
+  },
+  "0lzo2tFBFy8": {
+    "overview_cn": "Atlassian CEO Mike Cannon-Brookes 与 Alex Rampell 探讨了“SaaS 末日”、软件从静态数据库到主动 AI 智能体的演变，以及设计在建立 AI 信任中的核心作用。",
+    "overview_en": "Atlassian CEO Mike Cannon-Brookes and Alex Rampell discuss the 'SaaS Apocalypse,' the evolution of software from static databases to active AI agents, and the critical role of design in AI trust.",
+    "timeline": [
+      {
+        "time": "00:00:00",
+        "en": "The gap between model capability and delivered value",
+        "cn": "模型能力与实际交付价値之间的差距"
+      },
+      {
+        "time": "00:00:36",
+        "en": "The history of software: Filing cabinets to databases (1960-2022)",
+        "cn": "软件历史：从文件柜到数据库（1960-2022）"
+      },
+      {
+        "time": "00:02:31",
+        "en": "The shift to 'Thinking' software and AI doing work",
+        "cn": "向“会思考”的软件及 AI 执行任务的转变"
+      },
+      {
+        "time": "00:03:14",
+        "en": "Interpreting the 'SaaS Apocalypse' and market fear",
+        "cn": "解读“SaaS 末日”与市场恐惧"
+      },
+      {
+        "time": "00:06:47",
+        "en": "Three types of SaaS companies in the AI era",
+        "cn": "AI 时代的三类 SaaS 公司"
+      },
+      {
+        "time": "00:07:27",
+        "en": "Predictably Irrational: The psychology of pricing and fairness",
+        "cn": "预见性非理性：定价与公平心理学"
+      },
+      {
+        "time": "00:11:07",
+        "en": "Comparative advantage and the 'Vibe Coding' skepticism",
+        "cn": "比较优势与对“氛围编程”的怀疑"
+      },
+      {
+        "time": "00:14:18",
+        "en": "Business as a set of processes vs. system of record",
+        "cn": "业务作为流程集合 vs. 记录系统"
+      },
+      {
+        "time": "00:22:54",
+        "en": "The 'Vibe Coding' reality: Extensibility over replacement",
+        "cn": "“氛围编程”的现实：扩展性胜过替代性"
+      },
+      {
+        "time": "00:30:41",
+        "en": "Challenges of consumption-based vs. seat-based pricing",
+        "cn": "按需计费与按席位计费的挑战"
+      },
+      {
+        "time": "00:38:51",
+        "en": "Integrating agents into existing and new workflows",
+        "cn": "将智能体整合进现有及新工作流"
+      },
+      {
+        "time": "00:41:32",
+        "en": "The design challenge: Building trust and human-agent loops",
+        "cn": "设计挑战：建立信任与人机协作环"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Three Types of SaaS / 三类 SaaS 企业",
+        "desc": "Alex Rampell 将 SaaS 公司分为三类：1. 席位与产出挂钉（如 Zendesk，面临 AI 替代风险）；2. 席位作为公平定价手段但非产出核心（如 Workday）；3. 介于两者之间（如 Adobe）。"
+      },
+      {
+        "title": "Process over Records / 流程胜过记录",
+        "desc": "Mike 提出企业本质是一系列流程的集合，而非静态的记录系统。知识型企业的价値在于如何高效、廉价地协调这些输入受限或输出受限的流程。"
+      },
+      {
+        "title": "The Trust Design / 信任的设计",
+        "desc": "AI 的瓶颈不在技术，而在设计与体验。设计必须解决：建立信任、处理上下文问题、允许非确定性迭代反馈（Human-in-the-loop）。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Software is evolving from a place to store data to a system that performs work independently.",
+        "cn": "软件正从存储数据的场所演变为独立执行任务的系统。"
+      },
+      {
+        "en": "Vibe coding drives extensibility more than it replaces complex enterprise tools.",
+        "cn": "“氛围编程”更多是推动软件扩展性，而非取代复杂企业工具。"
+      },
+      {
+        "en": "Pricing fairness is psychological; customers prefer predictability over 'casino token' consumption models.",
+        "cn": "定价公平性是心理层面的；客户更喜欢可预测性。"
+      },
+      {
+        "en": "The next frontier for AI value is design and building human trust.",
+        "cn": "AI 价値的下一个前沿是设计与建立人类信任。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "SaaS Apocalypse",
+        "en": "The fear that AI will devalue traditional seat-based software models.",
+        "cn": "SaaS 末日：担心 AI 会使传统按席位软件模式贯値。"
+      },
+      {
+        "word": "System of Record",
+        "en": "A passive database serving as the authoritative source for data.",
+        "cn": "记录系统：作为数据权威来源的被动数据库。"
+      },
+      {
+        "word": "Vibe Coding",
+        "en": "Using AI prompts to generate code without deep technical mastery.",
+        "cn": "氛围编程：利用 AI 提示在没有深厚技术背景下生成代码。"
+      },
+      {
+        "word": "Predictably Irrational",
+        "en": "Humans have systematic irrational behavior patterns, especially in pricing.",
+        "cn": "预见性非理性：人类存在系统性非理性行为模式。"
+      },
+      {
+        "word": "Input/Output Constrained",
+        "en": "Processes limited by external demand (input) or internal capacity/creativity (output).",
+        "cn": "输入/输出受限：受外部需求限制的流程与受内部能力限制的流程。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "Filing cabinet that can do work.",
+        "cn": "能够执行任务的文件柜。"
+      },
+      {
+        "en": "Seats are tied to outcomes.",
+        "cn": "席位与产出挂钉。"
+      },
+      {
+        "en": "Bootload his brain with context.",
+        "cn": "在大脑中加载上下文信息。"
+      }
+    ],
+    "reflection_questions": [
+      "你的业务流程中，哪些是“输入受限”的，哪些是“输出受限”的？",
+      "在引入 AI 助手时，你如何设计“信任机制”以防止用户产生“黑盒”焦虑？"
+    ],
+    "closing_note": "AI 的价値不在于模型的原始能力，而在于通过深思熟虑的设计将其整合进人类的工作流中。"
+  },
+  "xXCBz_8hM9w": {
+    "overview_cn": "Sam Altman 回顾了 OpenAI 的建立过程，强调极端信念、单点聚焦以及 AI 进展的复利效应。他认为我们正处于一次重大技术周期中，创业公司具备结构性优势，但执行与商业本质依然重要。",
+    "overview_en": "Sam Altman reflects on building OpenAI, emphasizing extreme conviction, focus on one bet, and the compounding nature of AI progress. He argues we are in a major technological shift where startups have structural advantage, but execution discipline still matters.",
+    "timeline": [
+      {
+        "time": "00:00",
+        "en": "OpenAI committed early to AGI despite criticism and limited resources.",
+        "cn": "OpenAI 在资源不足、被质疑的情况下仍坚定压注 AGI。"
+      },
+      {
+        "time": "00:29",
+        "en": "Extreme conviction on one bet is widely underestimated.",
+        "cn": "“对单一方向的极端信念”被大多数人严重低估。"
+      },
+      {
+        "time": "01:05",
+        "en": "This is the best time yet to start a tech company.",
+        "cn": "现在是迄今为止最好的创业时机。"
+      },
+      {
+        "time": "01:35",
+        "en": "Startups gain advantage during major technological shifts.",
+        "cn": "在技术范式转变期，创业公司拥有优势。"
+      },
+      {
+        "time": "02:07",
+        "en": "AI progress may compound toward superintelligence within years.",
+        "cn": "AI 进展可能在数年内复利逌近超智能。"
+      },
+      {
+        "time": "04:20",
+        "en": "Abundant intelligence + abundant energy unlock everything.",
+        "cn": "“智能+能源”的极大丰富将解锁几乎所有问题。"
+      },
+      {
+        "time": "06:29",
+        "en": "Peer groups are more important than mentorship alone.",
+        "cn": "同伴群体比单一导师更关键。"
+      },
+      {
+        "time": "08:17",
+        "en": "You can just try things—more often than people think.",
+        "cn": "很多事情其实可以直接去尝试。"
+      },
+      {
+        "time": "14:10",
+        "en": "Belief in scaling deep learning was considered heretical.",
+        "cn": "“规模化深度学习”曾被认为是异端观点。"
+      },
+      {
+        "time": "19:29",
+        "en": "Focus on one thing and push it relentlessly.",
+        "cn": "聚焦一个方向并持续推进。"
+      },
+      {
+        "time": "22:59",
+        "en": "Conviction should yield to data when evidence appears.",
+        "cn": "一旦有数据，信念必须让位。"
+      },
+      {
+        "time": "27:24",
+        "en": "Product-market fit only becomes clear after real usage.",
+        "cn": "产品价値只有在真实用户中才能验证。"
+      },
+      {
+        "time": "33:42",
+        "en": "The world is still underestimating AI's impact.",
+        "cn": "世界仍严重低估 AI 的影响。"
+      },
+      {
+        "time": "44:20",
+        "en": "Speed and focus are the ultimate startup advantages now.",
+        "cn": "速度与专注是当前创业的最大优势。"
+      },
+      {
+        "time": "45:25",
+        "en": "AI does not remove the need for real business fundamentals.",
+        "cn": "AI 不会改变商业基本规律。"
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "Extreme Conviction / 极端信念",
+        "desc": "在缺乏数据、被主流反对时依然持续投入的能力。这是 early-stage 创业最稀缺的能力，本质是在不确定性极高阶段做决策的能力。"
+      },
+      {
+        "title": "Conviction vs Truth-seeking / 信念 vs 求真",
+        "desc": "前期需要 conviction（没有数据时），但一旦数据出现，必须转向 truth-seeking。很多人失败在于把 conviction 延续到数据已经反证之后。"
+      },
+      {
+        "title": "Startup Window / 创业窗口期",
+        "desc": "在稳定时期，大公司有优势；在范式变化期，小公司有优势。当前 AI 就属于后者。这不是情绪判断，而是结构性机会窗口。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "Extreme conviction is required before data exists.",
+        "cn": "在没有数据之前，需要极端信念。"
+      },
+      {
+        "en": "Focus beats diversification in early-stage startups.",
+        "cn": "早期创业中，聚焦优于分散。"
+      },
+      {
+        "en": "Scaling what works is a universal strategy.",
+        "cn": "对有效路径进行规模化是通用策略。"
+      },
+      {
+        "en": "Peer groups shape outcomes more than mentors.",
+        "cn": "同伴群体比导师更影响结果。"
+      },
+      {
+        "en": "AI accelerates execution, not business fundamentals.",
+        "cn": "AI 加速执行，但不改变商业本质。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Extreme conviction",
+        "en": "Strong belief maintained in the absence of data.",
+        "cn": "在没有数据支持时仍坚持的强信念。"
+      },
+      {
+        "word": "Scaling",
+        "en": "Increasing system size to improve performance predictably.",
+        "cn": "通过扩大规模来提升性能的策略。"
+      },
+      {
+        "word": "Peer group effect",
+        "en": "Influence of surrounding individuals on behavior and ambition.",
+        "cn": "周围人对行为和目标的影响。"
+      },
+      {
+        "word": "Tech paradigm shift",
+        "en": "Moments when new technologies reset competitive dynamics.",
+        "cn": "技术范式变化带来的竞争格局重置。"
+      },
+      {
+        "word": "Product-market fit",
+        "en": "Validation of product value through real users.",
+        "cn": "通过真实用户验证产品价値。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "You can just try stuff.",
+        "cn": "你其实可以直接去试。"
+      },
+      {
+        "en": "No one has all the answers.",
+        "cn": "没有人掌握所有答案。"
+      },
+      {
+        "en": "Conviction until data arrives.",
+        "cn": "在数据出现前坚持信念。"
+      },
+      {
+        "en": "Build something people actually want.",
+        "cn": "做真正有人需要的东西。"
+      },
+      {
+        "en": "More is more.",
+        "cn": "更多就是更多。"
+      }
+    ],
+    "reflection_questions": [
+      "你当前做的事情，是“多点试探”，还是“单点极端聚焦”？",
+      "你的 conviction 是否已经被数据证伪但仍在坚持？",
+      "你所在的 peer group，是在放大你的 ambition 还是限制它？"
+    ],
+    "closing_note": "核心不是 AI，而是如何在不确定中行动：早压注、深聚焦、快迭代，同时始终区分 demo 和真正的商业。"
+  },
+  "julbw1JuAz0": {
+    "overview_cn": "本视频深入探讨了Claude Code的诞生历程及其对软件工程领域的影响。Boris Cherny，Claude Code的创建者，分享了他从早期编程经历、创业到在Meta领导代码质量，最终加入Anthropic并推动AI代码生成工具发展的旅程。视频强调了AI在代码编写中日益增长的作用，以及工程师在AI时代应如何适应和发展。",
+    "overview_en": "This video explores the origin story of Claude Code and its impact on software engineering through the journey of its creator, Boris Cherny. It covers his early coding experiences, startup ventures, leading code quality at Meta, and ultimately joining Anthropic to spearhead AI code generation. The discussion highlights the increasing role of AI in writing code and the evolving skills engineers need in this new era.",
+    "timeline": [
+      {
+        "time": "00:15",
+        "cn": "AI代码生成效率：Boris分享Claude Code已能完成100%的PR，无需手动修改。",
+        "en": "AI Code Generation Efficiency: Boris shares how Claude Code can now complete 100% of PRs without manual edits."
+      },
+      {
+        "time": "00:34",
+        "cn": "AI时代与印刷术类比：Boris将当前AI变革比作15世纪的印刷术革命，预示着新的职业类别诞生。",
+        "en": "AI Era Compared to Printing Press: Boris likens the current AI transformation to the 15th-century printing press revolution, foreshadowing new professional categories."
+      },
+      {
+        "time": "02:19",
+        "cn": "Boris的早期编程经历：讲述了通过eBay销售宝可梦卡片学习HTML，以及为TI83计算器编程解决数学题的经历。",
+        "en": "Boris's Early Programming: Recounts learning HTML by selling Pokemon cards on eBay and programming TI83 calculators for math tests."
+      },
+      {
+        "time": "05:08",
+        "cn": "创业与产品市场契合：分享了在医疗软件公司Agile Diagnosis的创业经历，强调了产品市场契合的重要性及工程师需关注结果而非技术本身。",
+        "en": "Startups and Product-Market Fit: Shares experiences at medical software startup Agile Diagnosis, emphasizing the importance of product-market fit and engineers focusing on outcomes over technology."
+      },
+      {
+        "time": "11:14",
+        "cn": "Meta七年职业生涯：Boris在Facebook Groups、Instagram工作，最终领导Meta所有代码库的代码质量工作。",
+        "en": "Seven Years at Meta: Boris's career spanned Facebook Groups, Instagram, culminating in leading code quality across all Meta codebases."
+      },
+      {
+        "time": "17:03",
+        "cn": "代码质量与工程生产力：讨论了Meta的“Better Engineering”项目，以及代码质量对工程师生产力的显著影响。",
+        "en": "Code Quality and Engineering Productivity: Discusses Meta's 'Better Engineering' program and the significant impact of code quality on engineer productivity."
+      },
+      {
+        "time": "19:39",
+        "cn": "加入Anthropic与首次PR被拒：Boris加入Anthropic后，其首个手写PR被Adam Wolf拒绝，并被要求使用早期的AI工具Clyde。",
+        "en": "Joining Anthropic and First PR Rejection: Boris's first handwritten PR at Anthropic was rejected by Adam Wolf, who advised him to use the early AI tool, Clyde."
+      },
+      {
+        "time": "23:28",
+        "cn": "Claude Code的起源：Boris最初为理解Anthropic API而开发了一个终端聊天工具，这成为了Claude Code的早期原型。",
+        "en": "Origin of Claude Code: Boris initially built a terminal-based chat tool to understand the Anthropic API, which served as an early prototype for Claude Code."
+      }
+    ],
+    "key_concepts": [
+      {
+        "title": "AI代码生成与工程师角色转变",
+        "desc": "随着AI模型能够生成大部分代码，工程师的角色正从纯粹的编写者转变为AI的指导者和验证者。这要求工程师更关注系统设计、问题解决和AI工具的有效利用，而非逐行手写代码。"
+      },
+      {
+        "title": "代码质量在AI时代的重要性",
+        "desc": "AI生成的代码可能更难验证，因此高质量、模块化的代码库对于AI工具的有效运行至关重要。清晰的代码基础能帮助AI更好地理解和生成代码，减少人工纠正的需要，从而提高整体生产力。"
+      },
+      {
+        "title": "理解底层逻辑的重要性",
+        "desc": "无论是十年前理解JavaScript VM，还是现在理解AI模型的工作原理，工程师始终需要深入了解其所构建层级之下的技术。这种底层知识提供了更强的控制力和解决问题的能力。"
+      },
+      {
+        "title": "产品市场契合的探索精神",
+        "desc": "Boris的创业经历表明，产品市场契合并非一蹴而就，而是通过不断提出假设、测试和迭代来实现。工程师应具备用户研究和解决实际问题的能力，而非仅仅专注于技术实现。"
+      }
+    ],
+    "core_takeaways": [
+      {
+        "en": "The rapid advancement of AI models is fundamentally changing software engineering, making human-written code less common and shifting the focus to AI-assisted development.",
+        "cn": "AI模型的快速发展正在从根本上改变软件工程，手写代码变得不那么普遍，重心转向AI辅助开发。"
+      },
+      {
+        "en": "Engineers must adapt by understanding the underlying AI models and focusing on higher-level problem-solving, system design, and code verification rather than just code writing.",
+        "cn": "工程师必须通过理解底层AI模型，并将重心放在更高层次的问题解决、系统设计和代码验证上，而不仅仅是代码编写。"
+      },
+      {
+        "en": "Maintaining a clean and well-structured codebase is crucial for both human engineers and AI agents, as it significantly boosts productivity and reduces errors.",
+        "cn": "维护一个干净、结构良好的代码库对人类工程师和AI代理都至关重要，因为它能显著提高生产力并减少错误。"
+      },
+      {
+        "en": "The pursuit of product-market fit requires a practical, iterative approach, where engineers actively engage with users to understand real-world needs and pivot as necessary.",
+        "cn": "追求产品市场契合需要一种实用、迭代的方法，工程师积极与用户互动以了解现实需求，并根据需要进行调整。"
+      }
+    ],
+    "keywords": [
+      {
+        "word": "Claude Code",
+        "en": "An AI coding agent developed at Anthropic, capable of generating significant portions of code, sometimes 100% of a pull request.",
+        "cn": "Anthropic开发的一款AI编码代理，能够生成大部分代码，有时甚至是一个拉取请求的全部内容。"
+      },
+      {
+        "word": "Agentic AI",
+        "en": "A more advanced form of AI beyond conversational chatbots, where the AI can autonomously perform tasks and generate complete solutions, especially in coding.",
+        "cn": "一种超越对话式聊天机器人的更高级AI形式，AI能够自主执行任务并生成完整的解决方案，尤其是在编码领域。"
+      },
+      {
+        "word": "Code Quality",
+        "en": "The measure of how well-written, maintainable, and error-free a codebase is, which significantly impacts engineering productivity and the effectiveness of AI tools.",
+        "cn": "衡量代码库编写质量、可维护性和无错误程度的指标，它显著影响工程生产力和AI工具的有效性。"
+      },
+      {
+        "word": "Tech Debt",
+        "en": "The implied cost of additional rework caused by choosing an easy solution now instead of using a better approach that would take longer, often mandated to be fixed by companies like Meta.",
+        "cn": "由于当前选择了一个简单的解决方案而非更耗时的最佳方法而导致的额外返工的隐含成本，通常由像Meta这样的公司强制要求修复。"
+      },
+      {
+        "word": "Product-Market Fit",
+        "en": "The degree to which a product satisfies a strong market demand, often discovered through iterative hypothesis testing and user research rather than a single grand idea.",
+        "cn": "产品满足强大市场需求的程度，通常通过迭代的假设测试和用户研究而非单一宏伟想法来发现。"
+      },
+      {
+        "word": "Printing Press Metaphor",
+        "en": "Boris Cherny's analogy comparing the current AI revolution in software engineering to the invention of the printing press in the 1400s, signifying a profound shift in how work is done and new roles emerge.",
+        "cn": "Boris Cherny将当前软件工程领域的AI革命比作15世纪印刷术的发明，象征着工作方式的深刻转变和新角色的出现。"
+      }
+    ],
+    "phrase_drill": [
+      {
+        "en": "The model is improving so quickly that the ideas that worked with the old model might not work with the new model.",
+        "cn": "模型改进如此之快，以至于适用于旧模型的想法可能不适用于新模型。"
+      },
+      {
+        "en": "Engineering has always been a practical thing for me. Coding is a means to build things and to make useful things.",
+        "cn": "对我来说，工程一直是一件实用的事。编码是构建事物和制造有用工具的手段。"
+      },
+      {
+        "en": "You can't have one big idea because the idea is probably going to be wrong. So, you kind of form hypothesis, you follow it down and and you see what's right.",
+        "cn": "你不能只有一个大想法，因为这个想法很可能是错的。所以，你提出假设，然后去验证，看看什么是对的。"
+      },
+      {
+        "en": "Always understand the layer under. It's really important because that just gives you the depth and you kind of like you have a little bit more levers to to work at the layer that you actually work at.",
+        "cn": "永远要理解底层。这非常重要，因为它能给你深度，让你在实际工作的层面上拥有更多可操作的杠杆。"
+      },
+      {
+        "en": "Engineers are the first adopters. And so when we started to move out of conversational AI to agentic AI, it took a little bit, but engineers understood it pretty quick.",
+        "cn": "工程师是第一批采纳者。所以当我们开始从对话式AI转向代理式AI时，虽然花了一点时间，但工程师们很快就理解了。"
+      }
+    ],
+    "reflection_questions": [
+      "在AI能够编写大部分代码的未来，工程师的核心价值和不可替代的技能将是什么？",
+      "你的团队或公司目前如何应对AI生成代码带来的挑战和机遇？在代码审查和质量保障方面有哪些新实践？",
+      "Boris Cherny强调了理解“底层”的重要性，在当前AI时代，你认为工程师最应该去理解的“底层”是什么？",
+      "你如何看待将AI变革与印刷术革命相提并论？这对软件开发行业未来的发展意味着什么？"
+    ],
+    "closing_note": "拥抱AI作为强大的辅助工具，同时不断提升系统设计、问题解决和代码质量把控能力，是AI时代工程师的关键。"
+  }
+}
