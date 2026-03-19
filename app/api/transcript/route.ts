@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
 
     const [oembedData, transcriptText] = await Promise.all([
       fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`)
-        .then(r => r.ok ? r.json() : {}),
+        .then(r => r.ok ? r.json() : {}) as Promise<{title?: string; author_name?: string}>,
       fetchTranscriptWithYtDlp(videoId),
     ])
 
