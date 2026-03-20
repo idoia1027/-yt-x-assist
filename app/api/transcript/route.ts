@@ -215,8 +215,6 @@ export async function POST(req: NextRequest) {
       thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
       transcript: transcriptText,
       hasTranscript: transcriptText.length > 0,
-      _debug: transcriptDebug,
-      _debug_transcript_preview: transcriptText.slice(0, 300),
     })
   } catch (err) {
     console.error('Transcript error:', err)
