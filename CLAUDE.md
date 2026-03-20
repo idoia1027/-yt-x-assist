@@ -27,14 +27,16 @@
 - URL 带 `?token=xxx` 自动存入 localStorage
 
 ## 内容池（data/analyses.json）
-- 当前 16 条视频，已有字段：`overview_cn/en`, `timeline`, `key_concepts`, `core_takeaways`, `keywords`, `phrase_drill`, `reflection_questions`, `closing_note`, `publishedAt`, `title`, `author`, `thumbnail`
+- 当前 16 条视频，字段：`overview_cn/en`, `timeline`, `key_concepts`, `core_takeaways`, `keywords`, `phrase_drill`, `reflection_questions`, `closing_note`, `publishedAt`, `title`, `author`, `thumbnail`
 - **不能在 Vercel 运行时写入**（生产环境文件系统只读），只能通过本地脚本或 GitHub Action 更新后 push
 
 ## 自动化内容更新
-- `data/channels.json`：配置要追踪的 YouTube 频道列表
-- `.github/workflows/daily-fetch.yml`：每天北京时间 10:00 自动触发
+- `data/channels.json`：配置要追踪的 YouTube 频道列表（当前只有 Y Combinator）
+- `.github/workflows/daily-fetch.yml`：每天 UTC 02:00（北京时间 10:00）自动触发，支持手动触发
+  - 已配置 `permissions: contents: write`
+  - git push 使用 `GITHUB_TOKEN` 显式鉴权（exit code 128 问题仍在排查中）
 - `scripts/daily-fetch.mjs`：RSS 拉新视频 → Supadata 字幕 → Gemini 分析 → 写入 analyses.json → git push
-- GitHub Secrets 需配置：`SUPADATA_API_KEY`、`OPENAI_API_KEY`
+- GitHub Secrets 已配置：`SUPADATA_API_KEY`、`OPENAI_API_KEY`
 
 ## 首页动态逻辑（app/page.tsx）
 - 从 `/api/videos` 接口获取视频列表，按 `publishedAt` 倒排（最新在前）
@@ -51,13 +53,17 @@
 - `data/analyses.json` — 内容池（含 publishedAt/title/author/thumbnail）
 - `data/channels.json` — 自动追踪的频道配置
 - `scripts/daily-fetch.mjs` — 本地/CI 批量分析脚本
+- `.github/workflows/daily-fetch.yml` — GitHub Action 定时任务
 
 ## 开发约束
 - **改动要外科手术式**，不动无关功能
-- X 推文模块、定制硅谷雷达、Profile 页面标注为"开发中"，暂不开发
-- 已标注"开发中"的功能不要误改
 - 新功能开发前先评估方案，确认后再执行
+- X 推文模块、定制硅谷雷达、Profile 页面标注为"开发中"，暂不开发
+
+## 未解决问题
+- GitHub Action git push 持续报 exit code 128，原因待查（已尝试：permissions: contents: write、显式 GITHUB_TOKEN 鉴权）
 
 ## 待办
+- 排查并修复 GitHub Action git push 失败问题
 - X 推文模块（待规划）
-- 频道列表按需扩充（当前只有 Y Combinator）
+- 频道列表按需扩充
