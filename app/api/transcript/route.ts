@@ -39,17 +39,67 @@ function formatTime(secs: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
-// Channel 1: youtube-transcript npm package (works on Vercel)
+// Channel 1: YouTube ANDROID client — fetches player data to get caption track URLs
+async function fetchViaAndroidClient(videoId: string): Promise<string> {
+  const clientVersion = '20.10.38'
+  try {
+    const playerRes = await fetch('https://www.youtube.com/youtubei/v1/player?prettyPrint=false', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': `com.google.android.youtube/${clientVersion} (Linux; U; Android 14)`,
+      },
+      body: JSON.stringify({
+        context: { client: { clientName: 'ANDROID', clientVersion } },
+        videoId,
+      }),
+      signal: AbortSignal.timeout(10000),
+    })
+    if (!playerRes.ok) { console.error('android client player fetch failed:', playerRes.status); return '' }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const playerData: any = await playerRes.json()
+    const tracks: any[] = playerData?.captions?.playerCaptionsTracklistRenderer?.captionTracks
+    if (!tracks || tracks.length === 0) { console.error('android client: no caption tracks'); return '' }
+
+    // Prefer English, fallback to first
+    const track = tracks.find((t: any) => t.languageCode?.startsWith('en')) || tracks[0]
+    console.log(`android client: using track lang=${track.languageCode}`)
+
+    const captionRes = await fetch(track.baseUrl, {
+      headers: { 'User-Agent': `com.google.android.youtube/${clientVersion} (Linux; U; Android 14)` },
+      signal: AbortSignal.timeout(10000),
+    })
+    if (!captionRes.ok) { console.error('android client: caption fetch failed:', captionRes.status); return '' }
+    const xml = await captionRes.text()
+
+    const lines: string[] = []
+    const re = /<p\s+t="(\d+)"\s+d="\d+"[^>]*>([\s\S]*?)<\/p>/g
+    let m: RegExpExecArray | null
+    while ((m = re.exec(xml)) !== null) {
+      const tMs = parseInt(m[1])
+      const text = m[2]
+        .replace(/<s[^>]*>/g, '').replace(/<\/s>/g, '').replace(/<[^>]+>/g, '')
+        .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+        .trim()
+      if (text) lines.push(`[${formatTime(tMs)}] ${text}`)
+    }
+    console.log(`android client: parsed ${lines.length} lines`)
+    return lines.join('\n').slice(0, 30000)
+  } catch (e) {
+    console.error('android client error:', e)
+  }
+  return ''
+}
+
+// Channel 1b: youtube-transcript npm package (fallback)
 async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
   const langs = ['en', 'zh-Hans', 'zh-Hant', 'zh', undefined]
   for (const lang of langs) {
     try {
       const items = await YoutubeTranscript.fetchTranscript(videoId, lang ? { lang } : {})
       if (items && items.length > 0) {
-        // Detect ms vs seconds: if max offset > 7200, it's milliseconds
         const maxOffset = items.reduce((max, i) => Math.max(max, i.offset), 0)
         const divisor = maxOffset > 7200 ? 1000 : 1
-        console.log(`transcript: channel 1 got ${items.length} items with lang=${lang}, divisor=${divisor}`)
         return items.map(i => `[${formatTime(i.offset / divisor)}] ${i.text}`).join('\n').slice(0, 30000)
       }
     } catch (e) {
@@ -142,17 +192,21 @@ async function fetchViaYtDlp(videoId: string): Promise<string> {
 }
 
 async function fetchTranscript(videoId: string): Promise<string> {
-  // Channel 1: youtube-transcript package
-  const result1 = await fetchViaYoutubeTranscript(videoId)
-  if (result1) { console.log('transcript: channel 1 success'); return result1 }
+  // Channel 1: ANDROID client (most reliable)
+  const result1 = await fetchViaAndroidClient(videoId)
+  if (result1) { console.log('transcript: channel 1 (android) success'); return result1 }
 
   // Channel 2: parse ytInitialPlayerResponse caption tracks
   const result2 = await fetchViaPageParse(videoId)
-  if (result2) { console.log('transcript: channel 2 success'); return result2 }
+  if (result2) { console.log('transcript: channel 2 (page parse) success'); return result2 }
 
-  // Channel 3: yt-dlp (local dev only)
-  const result3 = await fetchViaYtDlp(videoId)
-  if (result3) { console.log('transcript: channel 3 success'); return result3 }
+  // Channel 3: youtube-transcript package
+  const result3 = await fetchViaYoutubeTranscript(videoId)
+  if (result3) { console.log('transcript: channel 3 (npm pkg) success'); return result3 }
+
+  // Channel 4: yt-dlp (local dev only)
+  const result4 = await fetchViaYtDlp(videoId)
+  if (result4) { console.log('transcript: channel 4 (yt-dlp) success'); return result4 }
 
   console.log('transcript: all channels failed')
   return ''
