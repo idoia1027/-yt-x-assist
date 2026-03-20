@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { YoutubeTranscript } from 'youtube-transcript'
-import { execSync } from 'child_process'
-import fs from 'fs'
-import os from 'os'
-import path from 'path'
+
+export const runtime = 'edge'
 
 function extractVideoId(input: string): string | null {
   const patterns = [
@@ -17,29 +15,14 @@ function extractVideoId(input: string): string | null {
   return null
 }
 
-function parseVtt(vtt: string): string {
-  return vtt
-    .split('\n')
-    .filter(line => {
-      if (!line.trim()) return false
-      if (line.startsWith('WEBVTT') || line.startsWith('Kind:') || line.startsWith('Language:')) return false
-      if (/^\d{2}:\d{2}/.test(line)) return false
-      if (line.includes('<c>') || line.includes('><')) return false
-      return true
-    })
-    .filter((line, i, arr) => line !== arr[i - 1])
-    .join(' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
-function formatTime(secs: number): string {
+function formatTime(ms: number): string {
+  const secs = Math.floor(ms / 1000)
   const m = Math.floor(secs / 60)
-  const s = Math.floor(secs % 60)
+  const s = secs % 60
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
-// Channel 1: YouTube ANDROID client — fetches player data to get caption track URLs
+// Channel 1: YouTube ANDROID client — most reliable, session-free caption URLs
 async function fetchViaAndroidClient(videoId: string): Promise<string> {
   const clientVersion = '20.10.38'
   try {
@@ -55,43 +38,98 @@ async function fetchViaAndroidClient(videoId: string): Promise<string> {
       }),
       signal: AbortSignal.timeout(10000),
     })
-    if (!playerRes.ok) { console.error('android client player fetch failed:', playerRes.status); return '' }
+    if (!playerRes.ok) { console.error('ch1: player fetch failed', playerRes.status); return '' }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const playerData: any = await playerRes.json()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const tracks: any[] = playerData?.captions?.playerCaptionsTracklistRenderer?.captionTracks
-    if (!tracks || tracks.length === 0) { console.error('android client: no caption tracks'); return '' }
+    if (!tracks || tracks.length === 0) { console.error('ch1: no caption tracks'); return '' }
 
-    // Prefer English, fallback to first
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const track = tracks.find((t: any) => t.languageCode?.startsWith('en')) || tracks[0]
-    console.log(`android client: using track lang=${track.languageCode}`)
+    console.log(`ch1: track lang=${track.languageCode}`)
 
     const captionRes = await fetch(track.baseUrl, {
       headers: { 'User-Agent': `com.google.android.youtube/${clientVersion} (Linux; U; Android 14)` },
       signal: AbortSignal.timeout(10000),
     })
-    if (!captionRes.ok) { console.error('android client: caption fetch failed:', captionRes.status); return '' }
+    if (!captionRes.ok) { console.error('ch1: caption fetch failed', captionRes.status); return '' }
     const xml = await captionRes.text()
+    if (!xml || xml.length < 50) { console.error('ch1: caption body empty'); return '' }
 
     const lines: string[] = []
     const re = /<p\s+t="(\d+)"\s+d="\d+"[^>]*>([\s\S]*?)<\/p>/g
     let m: RegExpExecArray | null
     while ((m = re.exec(xml)) !== null) {
-      const tMs = parseInt(m[1])
       const text = m[2]
         .replace(/<s[^>]*>/g, '').replace(/<\/s>/g, '').replace(/<[^>]+>/g, '')
         .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
         .trim()
-      if (text) lines.push(`[${formatTime(tMs)}] ${text}`)
+      if (text) lines.push(`[${formatTime(parseInt(m[1]))}] ${text}`)
     }
-    console.log(`android client: parsed ${lines.length} lines`)
+    console.log(`ch1: parsed ${lines.length} lines`)
     return lines.join('\n').slice(0, 30000)
   } catch (e) {
-    console.error('android client error:', e)
+    console.error('ch1 error:', e)
   }
   return ''
 }
 
-// Channel 1b: youtube-transcript npm package (fallback)
+// Channel 2: parse ytInitialPlayerResponse from video page
+async function fetchViaPageParse(videoId: string): Promise<string> {
+  try {
+    const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!pageRes.ok) { console.error('ch2: page fetch failed', pageRes.status); return '' }
+    const html = await pageRes.text()
+
+    const markerIdx = html.indexOf('ytInitialPlayerResponse')
+    if (markerIdx === -1) { console.error('ch2: ytInitialPlayerResponse not found'); return '' }
+    const jsonStart = html.indexOf('{', markerIdx)
+    let depth = 0, jsonEnd = -1
+    for (let i = jsonStart; i < html.length; i++) {
+      if (html[i] === '{') depth++
+      else if (html[i] === '}') { depth--; if (depth === 0) { jsonEnd = i; break } }
+    }
+    if (jsonEnd === -1) return ''
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const playerData: any = JSON.parse(html.slice(jsonStart, jsonEnd + 1))
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const tracks: any[] = playerData?.captions?.playerCaptionsTracklistRenderer?.captionTracks
+    if (!tracks || tracks.length === 0) { console.error('ch2: no caption tracks'); return '' }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const track = tracks.find((t: any) => t.languageCode?.startsWith('en')) || tracks[0]
+    const captionRes = await fetch(track.baseUrl + '&fmt=json3', { signal: AbortSignal.timeout(10000) })
+    if (!captionRes.ok) return ''
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any = await captionRes.json()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const events: any[] = data?.events || []
+    return events
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .filter((e: any) => e.segs && e.tStartMs !== undefined)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .map((e: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const text = (e.segs as any[]).map((s: any) => s.utf8 || '').join('').replace(/\n/g, ' ').trim()
+        return `[${formatTime(e.tStartMs)}] ${text}`
+      })
+      .filter((line: string) => !line.endsWith('] '))
+      .join('\n').slice(0, 30000)
+  } catch (e) {
+    console.error('ch2 error:', e)
+  }
+  return ''
+}
+
+// Channel 3: youtube-transcript npm package
 async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
   const langs = ['en', 'zh-Hans', 'zh-Hant', 'zh', undefined]
   for (const lang of langs) {
@@ -100,93 +138,11 @@ async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
       if (items && items.length > 0) {
         const maxOffset = items.reduce((max, i) => Math.max(max, i.offset), 0)
         const divisor = maxOffset > 7200 ? 1000 : 1
-        return items.map(i => `[${formatTime(i.offset / divisor)}] ${i.text}`).join('\n').slice(0, 30000)
+        return items.map(i => `[${formatTime(i.offset / divisor * 1000)}] ${i.text}`).join('\n').slice(0, 30000)
       }
     } catch (e) {
-      console.error(`youtube-transcript error (lang=${lang}):`, e)
+      console.error(`ch3 error (lang=${lang}):`, e)
     }
-  }
-  return ''
-}
-
-// Channel 2: parse ytInitialPlayerResponse to get caption track URL
-async function fetchViaPageParse(videoId: string): Promise<string> {
-  try {
-    const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      },
-      signal: AbortSignal.timeout(15000),
-    })
-    if (!pageRes.ok) { console.error('page parse: page fetch failed', pageRes.status); return '' }
-    const html = await pageRes.text()
-
-    // Extract ytInitialPlayerResponse JSON using brace counting (handles large nested JSON)
-    const markerIdx = html.indexOf('ytInitialPlayerResponse')
-    if (markerIdx === -1) { console.error('page parse: ytInitialPlayerResponse not found'); return '' }
-    const jsonStart = html.indexOf('{', markerIdx)
-    if (jsonStart === -1) { console.error('page parse: opening brace not found'); return '' }
-    let depth = 0, jsonEnd = -1
-    for (let i = jsonStart; i < html.length; i++) {
-      if (html[i] === '{') depth++
-      else if (html[i] === '}') { depth--; if (depth === 0) { jsonEnd = i; break } }
-    }
-    if (jsonEnd === -1) { console.error('page parse: could not find closing brace'); return '' }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const playerData: any = JSON.parse(html.slice(jsonStart, jsonEnd + 1))
-    const captionTracks = playerData?.captions?.playerCaptionsTracklistRenderer?.captionTracks
-    if (!captionTracks || captionTracks.length === 0) {
-      console.error('page parse: no caption tracks found')
-      return ''
-    }
-
-    // Prefer English, fall back to first available
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const track = captionTracks.find((t: any) => t.languageCode?.startsWith('en')) || captionTracks[0]
-    const trackUrl = track.baseUrl + '&fmt=json3'
-    console.log(`page parse: using track lang=${track.languageCode}, url=${trackUrl.slice(0, 80)}...`)
-
-    const captionRes = await fetch(trackUrl, { signal: AbortSignal.timeout(10000) })
-    if (!captionRes.ok) { console.error('page parse: caption fetch failed', captionRes.status); return '' }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await captionRes.json()
-
-    const events: any[] = data?.events || []
-    return events
-      .filter((e: any) => e.segs && e.tStartMs !== undefined)
-      .map((e: any) => {
-        const text = (e.segs as any[]).map((s: any) => s.utf8 || '').join('').replace(/\n/g, ' ').trim()
-        return `[${formatTime(e.tStartMs / 1000)}] ${text}`
-      })
-      .filter((line: string) => !line.endsWith('] '))
-      .join('\n')
-      .slice(0, 30000)
-  } catch (e) {
-    console.error('page parse error:', e)
-  }
-  return ''
-}
-
-// Channel 3: yt-dlp (local dev fallback, not available on Vercel)
-async function fetchViaYtDlp(videoId: string): Promise<string> {
-  const tmpDir = os.tmpdir()
-  const tmpBase = path.join(tmpDir, `yt_${videoId}`)
-  try {
-    execSync(
-      `yt-dlp --skip-download --write-auto-sub --sub-lang en --sub-format vtt -o "${tmpBase}" "https://www.youtube.com/watch?v=${videoId}" --quiet`,
-      { timeout: 30000 }
-    )
-    const vttPath = `${tmpBase}.en.vtt`
-    if (fs.existsSync(vttPath)) {
-      const vtt = fs.readFileSync(vttPath, 'utf-8')
-      fs.unlinkSync(vttPath)
-      return parseVtt(vtt).slice(0, 30000)
-    }
-  } catch (e) {
-    console.error('yt-dlp error:', e)
   }
   return ''
 }
@@ -194,23 +150,19 @@ async function fetchViaYtDlp(videoId: string): Promise<string> {
 async function fetchTranscript(videoId: string): Promise<{ text: string; debug: string }> {
   const log: string[] = []
 
-  const result1 = await fetchViaAndroidClient(videoId)
-  log.push(`ch1(android):${result1 ? result1.length + 'chars' : 'empty'}`)
-  if (result1) return { text: result1, debug: log.join(' | ') }
+  const r1 = await fetchViaAndroidClient(videoId)
+  log.push(`ch1:${r1 ? r1.length + 'c' : 'empty'}`)
+  if (r1) return { text: r1, debug: log.join('|') }
 
-  const result2 = await fetchViaPageParse(videoId)
-  log.push(`ch2(pageParse):${result2 ? result2.length + 'chars' : 'empty'}`)
-  if (result2) return { text: result2, debug: log.join(' | ') }
+  const r2 = await fetchViaPageParse(videoId)
+  log.push(`ch2:${r2 ? r2.length + 'c' : 'empty'}`)
+  if (r2) return { text: r2, debug: log.join('|') }
 
-  const result3 = await fetchViaYoutubeTranscript(videoId)
-  log.push(`ch3(npmPkg):${result3 ? result3.length + 'chars' : 'empty'}`)
-  if (result3) return { text: result3, debug: log.join(' | ') }
+  const r3 = await fetchViaYoutubeTranscript(videoId)
+  log.push(`ch3:${r3 ? r3.length + 'c' : 'empty'}`)
+  if (r3) return { text: r3, debug: log.join('|') }
 
-  const result4 = await fetchViaYtDlp(videoId)
-  log.push(`ch4(ytDlp):${result4 ? result4.length + 'chars' : 'empty'}`)
-  if (result4) return { text: result4, debug: log.join(' | ') }
-
-  return { text: '', debug: log.join(' | ') }
+  return { text: '', debug: log.join('|') }
 }
 
 export async function POST(req: NextRequest) {
