@@ -551,8 +551,23 @@ export default function App() {
   const [role, setRole] = useState<UserRole>({ role: 'guest', dailyLimit: 0, canViewPro: true, usedToday: 0 });
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [allVideos, setAllVideos] = useState<VideoItem[]>([]);
+  const [subsShown, setSubsShown] = useState(4);
+  const [picksShown, setPicksShown] = useState(3);
 
   useEffect(() => { setRole(resolveRole()); }, []);
+
+  useEffect(() => {
+    fetch('/api/videos').then(r => r.json()).then((videos: {videoId:string;title:string;author:string;thumbnail:string;publishedAt:string}[]) => {
+      setAllVideos(videos.map(v => ({
+        videoId: v.videoId,
+        title: v.title,
+        author: v.author,
+        cover: v.thumbnail,
+        date: v.publishedAt ? new Date(v.publishedAt).toLocaleDateString('zh-CN', {month:'long',day:'numeric'}) : '',
+      })));
+    }).catch(() => {});
+  }, []);
 
   const handleSubscribe = (channel: typeof RECOMMENDED_CHANNELS[0]) => setMySubs([...mySubs, channel]);
   const handleUnsubscribe = (id: number) => setMySubs(mySubs.filter(s => s.id !== id));
@@ -961,11 +976,10 @@ export default function App() {
                 </h3>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {SAMPLE_HOME.subs_updates.map((item, i) => (
-                  <div key={item.id} onClick={() => handleVideoClick(item)} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer group flex flex-col overflow-hidden">
+                {(allVideos.length > 0 ? allVideos : SAMPLE_HOME.subs_updates).slice(0, subsShown).map((item, i) => (
+                  <div key={item.videoId || item.id} onClick={() => handleVideoClick(item)} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer group flex flex-col overflow-hidden">
                     <div className="aspect-video relative bg-slate-100">
                       <img src={item.cover} className="w-full h-full object-cover" alt={item.title} />
-                      <span className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">{item.duration}</span>
                       {i === 0 && <div className="absolute top-2 left-2 bg-indigo-600 text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-sm">NEW</div>}
                     </div>
                     <div className="p-4 flex flex-col flex-1 justify-between">
@@ -981,6 +995,11 @@ export default function App() {
                   </div>
                 ))}
               </div>
+              {allVideos.length > subsShown && (
+                <button onClick={() => setSubsShown(n => n + 4)} className="mt-2 w-full py-2 rounded-lg border border-slate-200 text-xs text-slate-500 hover:bg-slate-50 hover:text-indigo-600 transition">
+                  加载更多 · 还有 {allVideos.length - subsShown} 个视频
+                </button>
+              )}
             </div>
 
             <div className="lg:col-span-4 flex flex-col gap-6">
@@ -1010,8 +1029,8 @@ export default function App() {
               <div className="h-px flex-1 bg-slate-200" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {SAMPLE_HOME.daily_picks.map(item => (
-                <div key={item.id} onClick={() => handleVideoClick(item)} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer group overflow-hidden flex items-center md:block">
+              {(allVideos.length > 0 ? allVideos : SAMPLE_HOME.daily_picks).slice(0, picksShown).map(item => (
+                <div key={item.videoId || item.id} onClick={() => handleVideoClick(item)} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer group overflow-hidden flex items-center md:block">
                   <div className="w-1/3 md:w-full md:aspect-video bg-slate-100 relative shrink-0 h-24 md:h-auto">
                     <img src={item.cover} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500" alt={item.title} />
                   </div>
@@ -1022,6 +1041,11 @@ export default function App() {
                 </div>
               ))}
             </div>
+            {allVideos.length > picksShown && (
+              <button onClick={() => setPicksShown(n => n + 3)} className="mt-4 w-full py-2 rounded-lg border border-slate-200 text-xs text-slate-500 hover:bg-slate-50 hover:text-indigo-600 transition">
+                加载更多 · 还有 {allVideos.length - picksShown} 个视频
+              </button>
+            )}
           </div>
         </div>
       </main>

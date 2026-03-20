@@ -138,7 +138,11 @@
       "在你的实际或设想项目中，如何根据任务的复杂性和自主性需求，有效区分并选择应用AI Agent或Workflow模式？",
       "除了视频中强调的“模型同理心”和“可验证性”，你认为在设计和部署高可靠性AI Agent时，还有哪些关键的考量因素和挑战？"
     ],
-    "closing_note": "在AI Agent的浪潮中，专注于构建可衡量、可扩展的解决方案，并以开放的心态拥抱模型能力的持续进步。"
+    "closing_note": "在AI Agent的浪潮中，专注于构建可衡量、可扩展的解决方案，并以开放的心态拥抱模型能力的持续进步。",
+    "publishedAt": "2025-02-13T04:21:22-08:00",
+    "title": "Tips for building AI agents",
+    "author": "Anthropic",
+    "thumbnail": "https://img.youtube.com/vi/LP5OCa20Zpg/hqdefault.jpg"
   },
   "AmdLVWMdjOk": {
     "overview_cn": "这段访谈核心讲三件事：产品来自用户已有行为（latent demand）、工程师要做通才、以及 AI 时代工程的核心从“写代码”变成“编排系统”。",
@@ -261,7 +265,11 @@
       "你的用户已经在做但你还没有结构化支持的事情有哪些？",
       "如果工程团队从 30 人应压缩到5 人，你会首先自动化哪些环节？"
     ],
-    "closing_note": "真正的变化不是 AI 写代码，而是代码已不再是瓶颈，杠杠转移到了系统设计与编排。"
+    "closing_note": "真正的变化不是 AI 写代码，而是代码已不再是瓶颈，杠杠转移到了系统设计与编排。",
+    "publishedAt": "2025-12-15T06:00:15-08:00",
+    "title": "Boris Cherny (Creator of Claude Code) On What Grew His Career And Building at Anthropic",
+    "author": "Ryan Peterman",
+    "thumbnail": "https://img.youtube.com/vi/AmdLVWMdjOk/hqdefault.jpg"
   },
   "hN5ZFzWFhhg": {
     "overview_cn": "本期访谈OpenAI Codex前技术负责人Michael Bolin，他分享了从早期编程工具Chickenfoot到在Google、Meta（Facebook）和OpenAI的职业发展历程。他详细讲述了如何通过开发Buck构建系统和New Clyde IDE解决大型科技公司的工程痛点，以及他对开源、职业成长和AI代理的思考。看完后，你将对大型软件工程的挑战、个人职业选择与公司目标对齐的重要性有更深刻的理解。",
@@ -393,7 +401,11 @@
       "在你的职业生涯中，是否有过“英雄之旅”式的尝试？你从中获得了哪些经验教训？",
       "如何平衡个人对技术的热情与公司战略方向，以实现更好的职业发展？"
     ],
-    "closing_note": "审视你工作中的痛点，思考如何通过解决基础性问题来创造更大的价值和影响力。"
+    "closing_note": "审视你工作中的痛点，思考如何通过解决基础性问题来创造更大的价值和影响力。",
+    "publishedAt": "2026-03-09T05:01:12-07:00",
+    "title": "OpenAI Codex Tech Lead On How His Career Grew And How He Uses Codex | Michael Bolin",
+    "author": "Ryan Peterman",
+    "thumbnail": "https://img.youtube.com/vi/hN5ZFzWFhhg/hqdefault.jpg"
   },
   "zjkBMFhNj_g": {
     "overview_cn": "本视频深入浅出地介绍了大型语言模型（LLM）的内部工作原理，从其作为“两个文件”的物理存在，到训练过程（预训练与微调），再到核心任务（下一词预测）和行业现状。看完后，你将对LLM的构建、能力边界和未来发展趋势有清晰的认识。",
@@ -545,7 +557,11 @@
       "考虑到LLM参数的“不可理解性”，我们应如何平衡其能力与潜在风险，以确保负责任的AI发展？",
       "缩放定律揭示了模型性能与资源投入的强关联，这对于个人开发者或小型团队进入LLM领域意味着什么？"
     ],
-    "closing_note": "理解LLM从“下一词预测”到“助手”的演变，有助于你更好地利用和评估这些强大的工具。"
+    "closing_note": "理解LLM从“下一词预测”到“助手”的演变，有助于你更好地利用和评估这些强大的工具。",
+    "publishedAt": "2023-11-22T18:27:48-08:00",
+    "title": "[1hr Talk] Intro to Large Language Models",
+    "author": "Andrej Karpathy",
+    "thumbnail": "https://img.youtube.com/vi/zjkBMFhNj_g/hqdefault.jpg"
   },
   "LCEmiRjPEtQ": {
     "overview_cn": "Karpathy 认为软件正在经历又一次底层范式变化。除了传统代码（software 1.0）和神经网络权重（software 2.0），LLM 带来了 software 3.0：用自然语言编程。这会重塑计算栈、产品形态，以及工程师的角色。",
@@ -726,7 +742,11 @@
       "你当前系统里最大的瓶颈，是生成能力不够，还是人类验证太慢？",
       "你的内容、文档、接口，有多少已经是 agent-friendly 的，而不只是 human-friendly 的？"
     ],
-    "closing_note": "这场演讲最深的一点，不是“AI 现在会写代码”，而是软件已经多出第三层可编程介质。这意味着我们必须围绕一种强大但不可靠的新计算机，重做产品、工作流和基础设施。"
+    "closing_note": "这场演讲最深的一点，不是“AI 现在会写代码”，而是软件已经多出第三层可编程介质。这意味着我们必须围绕一种强大但不可靠的新计算机，重做产品、工作流和基础设施。",
+    "publishedAt": "2025-06-18T18:05:19-07:00",
+    "title": "Andrej Karpathy: Software Is Changing (Again)",
+    "author": "Y Combinator",
+    "thumbnail": "https://img.youtube.com/vi/LCEmiRjPEtQ/hqdefault.jpg"
   },
   "n1E9IZfvGMA": {
     "overview_cn": "Dario Amodei 认为 AI 能力的指数级增长基本符合预期，但正在接近一个关键阶段：能力的提升将开始转化为现实世界的结构性变化。核心矛盾在于“能力增长极快”与“经济与社会扩散相对滞后”。",
@@ -893,7 +913,11 @@
       "在你的项目里，真正的瓶颈是能力问题，还是部署/扩散问题？",
       "如果AI能力明天翻10倍，你当前产品能否立刻受益？还是会卡在流程/数据/权限？"
     ],
-    "closing_note": "最关键的不是“等待技术突破”，而是“等待转化发生”。模型能力正在接近临界点，真正的问题是：世界能够多快围绕它重构。"
+    "closing_note": "最关键的不是“等待技术突破”，而是“等待转化发生”。模型能力正在接近临界点，真正的问题是：世界能够多快围绕它重构。",
+    "publishedAt": "2026-02-13T09:11:03-08:00",
+    "title": "Dario Amodei — “We are near the end of the exponential”",
+    "author": "Dwarkesh Patel",
+    "thumbnail": "https://img.youtube.com/vi/n1E9IZfvGMA/hqdefault.jpg"
   },
   "RNJCfif1dPY": {
     "overview_cn": "在斯坦福创业学院的这场演讲中，AI 先驱吴恩达（Andrew Ng）探讨了为什么执行速度是创业成功的终极预测指标、向智能体 AI 工作流的转变，以及 AI 如何重塑工程师和产品经理的角色。",
@@ -1028,7 +1052,11 @@
       "你的创业点子是一个足以让工程师下午就开始动工的“具体想法”吗？",
       "在 AI 让编程变廉价的时代，你如何通过“专家直觉”来缩短产品反馈周期？"
     ],
-    "closing_note": "不要害怕 AI 取代工作，要害怕那些比你更懂得利用 AI 来指挥计算机的人。"
+    "closing_note": "不要害怕 AI 取代工作，要害怕那些比你更懂得利用 AI 来指挥计算机的人。",
+    "publishedAt": "2025-07-10T07:02:05-07:00",
+    "title": "Andrew Ng: Building Faster with AI",
+    "author": "Y Combinator",
+    "thumbnail": "https://img.youtube.com/vi/RNJCfif1dPY/hqdefault.jpg"
   },
   "_BRhRh7mOX0": {
     "overview_cn": "本期视频由 Learn Prompting 和 HackAPrompt 创始人 Sander Schulhoff 主讲，深入探讨了提示工程（Prompt Engineering）的持续相关性及其在生成式AI安全中的挑战。内容涵盖了提示工程的起源、两种主要类型、以及高级提示技术，如链式思考和角色提示的实际效果，并强调了AI红队（AI Red Teaming）在确保AI系统安全方面的重要性。",
@@ -1177,7 +1205,11 @@
       "考虑到角色提示在准确性任务中的局限性，你将如何调整自己的提示策略，以更有效地利用AI在不同类型的任务中发挥作用？",
       "你认为AI红队技术对于未来AI系统的安全和可靠性有多重要？作为开发者或用户，我们能如何参与其中？"
     ],
-    "closing_note": "持续学习和实践提示工程，结合对AI安全挑战的认识，将助你更好地驾驭生成式AI的强大能力。"
+    "closing_note": "持续学习和实践提示工程，结合对AI安全挑战的认识，将助你更好地驾驭生成式AI的强大能力。",
+    "publishedAt": "2025-07-14T12:00:11-07:00",
+    "title": "Prompt Engineering and AI Red Teaming — Sander Schulhoff, HackAPrompt/LearnPrompting",
+    "author": "AI Engineer",
+    "thumbnail": "https://img.youtube.com/vi/_BRhRh7mOX0/hqdefault.jpg"
   },
   "CBm8aJKRDkk": {
     "overview_cn": "这场对谈围绕 prompt injection、AI 红队测试，以及为什么 LLM 的对抗鲁棒性至今仍基本无解展开。Sander Schulhoff 认为，当前主流评测方法本身就有问题，人类攻击者依然比自动化系统更有效，而如今的 agent 系统很多时候反而比单纯模型更容易被利用。",
@@ -1338,7 +1370,11 @@
       "如果一个 AI 系统必须读取外部内容并拥有写操作权限，你会如何重新定义它的可用边界？",
       "面对“问题暂时无解但商业上仍値得部署”的技术，你会如何做风险—收益判断？"
     ],
-    "closing_note": "整个行业直到现在仍没有一条真正令人信服的路径，能够把对抗安全问题解决掉，尤其是在 agents 场景下更是如此。在架构或系统设计发生根本变化之前，AI 安全更像一个持续漂移的目标，而不是一个可以宣布“已经解决”的层。"
+    "closing_note": "整个行业直到现在仍没有一条真正令人信服的路径，能够把对抗安全问题解决掉，尤其是在 agents 场景下更是如此。在架构或系统设计发生根本变化之前，AI 安全更像一个持续漂移的目标，而不是一个可以宣布“已经解决”的层。",
+    "publishedAt": "2025-10-22T13:39:25-07:00",
+    "title": "Prompt Injections, Red Teams & the Unsolvable Problem | Sander Schulhoff & Goda Go | PEC London 2025",
+    "author": "Prompt Engineering Conference",
+    "thumbnail": "https://img.youtube.com/vi/CBm8aJKRDkk/hqdefault.jpg"
   },
   "IfW1FMDkw4k": {
     "overview_cn": "Paweł Huryn 与 Akash Casshyap 合作带来了一场 AI 产品管理大师课，内容涵盖高阶提示词工程、PRD 撰写、模型微调、RAG 架构以及智能体工作流。",
@@ -1478,7 +1514,11 @@
       "在你的产品中，哪些风格化的输出可以通过 Fine-tuning 降低长期的 Token 成本？",
       "如果你有百万级用户文档，你该如何设计 RAG 的分块（Chunking）策略以保证搜索精度？"
     ],
-    "closing_note": "AI PM 市场正在呈指数级增长；目标是成为商业成果与技术可行性之间的“桥梁”。"
+    "closing_note": "AI PM 市场正在呈指数级增长；目标是成为商业成果与技术可行性之间的“桥梁”。",
+    "publishedAt": "2025-04-22T11:18:34-07:00",
+    "title": "Complete Course: AI Product Management",
+    "author": "Aakash Gupta",
+    "thumbnail": "https://img.youtube.com/vi/IfW1FMDkw4k/hqdefault.jpg"
   },
   "0v8U-0aSb-g": {
     "overview_cn": "本期视频展示了如何利用 Claude Code 等AI工具构建个人操作系统（Personal Operating System, POS），实现工作流程的全面自动化。通过连接日历、CRM、社交媒体等数据源，AI能自动生成每日计划、分析客户健康度、甚至辅助产品开发，将AI从辅助工具升级为高效的“数字执行助理”。看完后，你将了解如何利用AI整合信息、提升决策效率，并开始思考构建自己的自动化工作流。",
@@ -1631,7 +1671,11 @@
       "如何平衡 AI 自动化带来的效率提升与人类在判断、品味和创造性方面的独特价值？",
       "如何利用 AI 更好地管理个人知识库和学习过程，使其像视频中提到的“living files”一样不断进化？"
     ],
-    "closing_note": "从今天开始，识别你工作中一个痛点，并思考如何用 AI 技能将其自动化，迈出构建个人操作系统第一步。"
+    "closing_note": "从今天开始，识别你工作中一个痛点，并思考如何用 AI 技能将其自动化，迈出构建个人操作系统第一步。",
+    "publishedAt": "2026-03-11T12:09:37-07:00",
+    "title": "Automate Your Entire Work Life With Claude Code — No Coding Needed",
+    "author": "Aakash Gupta",
+    "thumbnail": "https://img.youtube.com/vi/0v8U-0aSb-g/hqdefault.jpg"
   },
   "PQU9o_5rHC4": {
     "overview_cn": "Anthropic Claude Code 的创建者 Boris Cherny 讨论了这一命令行工具的偶然演变、向“智能体优先”开发的转变，以及为什么手动编程时代正在迅速终结。",
@@ -1766,7 +1810,11 @@
       "如果你的代码库每两个月就要重写 80%，你会如何改变你对“代码质量”的定义？",
       "在智能体可以并行调试的时代，你作为“人类架构师”在系统架构中的核心职责是什么？"
     ],
-    "closing_note": "Claude Code 代表了从“辅助人类编程的工具”向“引导自主编程集群的人类意图”的转变。"
+    "closing_note": "Claude Code 代表了从“辅助人类编程的工具”向“引导自主编程集群的人类意图”的转变。",
+    "publishedAt": "2026-02-17T07:00:42-08:00",
+    "title": "Inside Claude Code With Its Creator Boris Cherny",
+    "author": "Y Combinator",
+    "thumbnail": "https://img.youtube.com/vi/PQU9o_5rHC4/hqdefault.jpg"
   },
   "hmtuvNfytjM": {
     "overview_cn": "OpenAI CEO Sam Altman 探讨了从 GPT-4 到 GPT-5 的跨越、通往超智能的路径，以及 AI 将如何重新定义科学发现、医疗保健和全球社会契约。",
@@ -1897,7 +1945,11 @@
       "当 AI 能够独立完成“千小时级”的科学研究时，人类“直觉”的独特价値将体现在哪里？",
       "你是否过度使用了 AI 作为“思考逃生舱”，从而削弱了你的认知张力？"
     ],
-    "closing_note": "在构建“单人十亿美金公司”未来的同时，将“99% 成功 / 1% 灾难”的指针推向绝对安全。"
+    "closing_note": "在构建“单人十亿美金公司”未来的同时，将“99% 成功 / 1% 灾难”的指针推向绝对安全。",
+    "publishedAt": "2025-08-07T17:09:36-07:00",
+    "title": "Sam Altman Shows Me GPT 5... And What's Next",
+    "author": "Cleo Abram",
+    "thumbnail": "https://img.youtube.com/vi/hmtuvNfytjM/hqdefault.jpg"
   },
   "0lzo2tFBFy8": {
     "overview_cn": "Atlassian CEO Mike Cannon-Brookes 与 Alex Rampell 探讨了“SaaS 末日”、软件从静态数据库到主动 AI 智能体的演变，以及设计在建立 AI 信任中的核心作用。",
@@ -2041,7 +2093,11 @@
       "你的业务流程中，哪些是“输入受限”的，哪些是“输出受限”的？",
       "在引入 AI 助手时，你如何设计“信任机制”以防止用户产生“黑盒”焦虑？"
     ],
-    "closing_note": "AI 的价値不在于模型的原始能力，而在于通过深思熟虑的设计将其整合进人类的工作流中。"
+    "closing_note": "AI 的价値不在于模型的原始能力，而在于通过深思熟虑的设计将其整合进人类的工作流中。",
+    "publishedAt": "2026-03-06T07:50:06-08:00",
+    "title": "Atlassian CEO on the SaaS Apocalypse, AI Agents & What Comes Next",
+    "author": "a16z",
+    "thumbnail": "https://img.youtube.com/vi/0lzo2tFBFy8/hqdefault.jpg"
   },
   "xXCBz_8hM9w": {
     "overview_cn": "Sam Altman 回顾了 OpenAI 的建立过程，强调极端信念、单点聚焦以及 AI 进展的复利效应。他认为我们正处于一次重大技术周期中，创业公司具备结构性优势，但执行与商业本质依然重要。",
@@ -2213,7 +2269,11 @@
       "你的 conviction 是否已经被数据证伪但仍在坚持？",
       "你所在的 peer group，是在放大你的 ambition 还是限制它？"
     ],
-    "closing_note": "核心不是 AI，而是如何在不确定中行动：早压注、深聚焦、快迭代，同时始终区分 demo 和真正的商业。"
+    "closing_note": "核心不是 AI，而是如何在不确定中行动：早压注、深聚焦、快迭代，同时始终区分 demo 和真正的商业。",
+    "publishedAt": "2024-11-08T07:01:12-08:00",
+    "title": "How To Build The Future: Sam Altman",
+    "author": "Y Combinator",
+    "thumbnail": "https://img.youtube.com/vi/xXCBz_8hM9w/hqdefault.jpg"
   },
   "julbw1JuAz0": {
     "overview_cn": "本视频深入探讨了Claude Code的诞生历程及其对软件工程领域的影响。Boris Cherny，Claude Code的创建者，分享了他从早期编程经历、创业到在Meta领导代码质量，最终加入Anthropic并推动AI代码生成工具发展的旅程。视频强调了AI在代码编写中日益增长的作用，以及工程师在AI时代应如何适应和发展。",
@@ -2356,6 +2416,10 @@
       "Boris Cherny强调了理解“底层”的重要性，在当前AI时代，你认为工程师最应该去理解的“底层”是什么？",
       "你如何看待将AI变革与印刷术革命相提并论？这对软件开发行业未来的发展意味着什么？"
     ],
-    "closing_note": "拥抱AI作为强大的辅助工具，同时不断提升系统设计、问题解决和代码质量把控能力，是AI时代工程师的关键。"
+    "closing_note": "拥抱AI作为强大的辅助工具，同时不断提升系统设计、问题解决和代码质量把控能力，是AI时代工程师的关键。",
+    "publishedAt": "2026-03-04T09:57:56-08:00",
+    "title": "Building Claude Code with Boris Cherny",
+    "author": "The Pragmatic Engineer",
+    "thumbnail": "https://img.youtube.com/vi/julbw1JuAz0/hqdefault.jpg"
   }
 }
