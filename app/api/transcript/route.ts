@@ -191,25 +191,26 @@ async function fetchViaYtDlp(videoId: string): Promise<string> {
   return ''
 }
 
-async function fetchTranscript(videoId: string): Promise<string> {
-  // Channel 1: ANDROID client (most reliable)
+async function fetchTranscript(videoId: string): Promise<{ text: string; debug: string }> {
+  const log: string[] = []
+
   const result1 = await fetchViaAndroidClient(videoId)
-  if (result1) { console.log('transcript: channel 1 (android) success'); return result1 }
+  log.push(`ch1(android):${result1 ? result1.length + 'chars' : 'empty'}`)
+  if (result1) return { text: result1, debug: log.join(' | ') }
 
-  // Channel 2: parse ytInitialPlayerResponse caption tracks
   const result2 = await fetchViaPageParse(videoId)
-  if (result2) { console.log('transcript: channel 2 (page parse) success'); return result2 }
+  log.push(`ch2(pageParse):${result2 ? result2.length + 'chars' : 'empty'}`)
+  if (result2) return { text: result2, debug: log.join(' | ') }
 
-  // Channel 3: youtube-transcript package
   const result3 = await fetchViaYoutubeTranscript(videoId)
-  if (result3) { console.log('transcript: channel 3 (npm pkg) success'); return result3 }
+  log.push(`ch3(npmPkg):${result3 ? result3.length + 'chars' : 'empty'}`)
+  if (result3) return { text: result3, debug: log.join(' | ') }
 
-  // Channel 4: yt-dlp (local dev only)
   const result4 = await fetchViaYtDlp(videoId)
-  if (result4) { console.log('transcript: channel 4 (yt-dlp) success'); return result4 }
+  log.push(`ch4(ytDlp):${result4 ? result4.length + 'chars' : 'empty'}`)
+  if (result4) return { text: result4, debug: log.join(' | ') }
 
-  console.log('transcript: all channels failed')
-  return ''
+  return { text: '', debug: log.join(' | ') }
 }
 
 export async function POST(req: NextRequest) {
@@ -220,7 +221,7 @@ export async function POST(req: NextRequest) {
     const videoId = extractVideoId(url)
     if (!videoId) return NextResponse.json({ error: 'Invalid YouTube URL' }, { status: 400 })
 
-    const [oembedData, transcriptText] = await Promise.all([
+    const [oembedData, { text: transcriptText, debug: transcriptDebug }] = await Promise.all([
       fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`)
         .then(r => r.ok ? r.json() : {}) as Promise<{title?: string; author_name?: string}>,
       fetchTranscript(videoId),
@@ -233,6 +234,7 @@ export async function POST(req: NextRequest) {
       thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
       transcript: transcriptText,
       hasTranscript: transcriptText.length > 0,
+      _debug: transcriptDebug,
       _debug_transcript_preview: transcriptText.slice(0, 300),
     })
   } catch (err) {
