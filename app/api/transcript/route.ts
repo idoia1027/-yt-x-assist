@@ -33,18 +33,21 @@ function parseVtt(vtt: string): string {
     .trim()
 }
 
+function formatTime(secs: number): string {
+  const m = Math.floor(secs / 60)
+  const s = Math.floor(secs % 60)
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
+
 // Channel 1: youtube-transcript npm package (works on Vercel)
 async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
   try {
     const items = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' })
     if (items && items.length > 0) {
-      return items.map(i => {
-        const totalSecs = Math.floor(i.offset / 1000)
-        const mins = Math.floor(totalSecs / 60)
-        const secs = totalSecs % 60
-        const time = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
-        return `[${time}] ${i.text}`
-      }).join('\n').slice(0, 30000)
+      // Detect ms vs seconds: if max offset > 7200, it's milliseconds
+      const maxOffset = items.reduce((max, i) => Math.max(max, i.offset), 0)
+      const divisor = maxOffset > 7200 ? 1000 : 1
+      return items.map(i => `[${formatTime(i.offset / divisor)}] ${i.text}`).join('\n').slice(0, 30000)
     }
   } catch (e) {
     console.error('youtube-transcript error:', e)
@@ -61,13 +64,14 @@ async function fetchViaTimedtext(videoId: string): Promise<string> {
     )
     if (!res.ok) return ''
     const xml = await res.text()
-    const texts = Array.from(xml.matchAll(/<text[^>]*>([\s\S]*?)<\/text>/g))
-    if (texts.length === 0) return ''
-    return texts
-      .map(m => m[1].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&quot;/g, '"'))
-      .join(' ')
-      .replace(/\s+/g, ' ')
-      .trim()
+    const matches = Array.from(xml.matchAll(/<text\s+start="([^"]+)"[^>]*>([\s\S]*?)<\/text>/g))
+    if (matches.length === 0) return ''
+    return matches
+      .map(m => {
+        const text = m[2].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/<[^>]+>/g, '').trim()
+        return `[${formatTime(parseFloat(m[1]))}] ${text}`
+      })
+      .join('\n')
       .slice(0, 30000)
   } catch (e) {
     console.error('timedtext error:', e)
