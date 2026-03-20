@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { toPng } from "html-to-image";
 import { resolveRole, canAnalyze, incrementUsage, type UserRole } from "@/lib/auth";
 import type { AnalysisResult } from "@/types";
 
@@ -276,11 +277,28 @@ function QuoteCard({ data }: { data: { title: string; author: string; duration?:
 function ShareModal({ onClose, data }: { onClose: () => void; data: { title: string; author: string; duration?: string; cover: string; summary: string[]; quote: { en: string; cn: string } } }) {
   const [cardType, setCardType] = useState<'notes' | 'quote'>('notes');
   const [isGenerating, setIsGenerating] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     setIsGenerating(true);
     const t = setTimeout(() => setIsGenerating(false), 800);
     return () => clearTimeout(t);
   }, [cardType]);
+  const handleSave = async () => {
+    if (!cardRef.current || isSaving) return;
+    setIsSaving(true);
+    try {
+      const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 });
+      const link = document.createElement('a');
+      link.download = `yt-x-assist-${cardType}-${Date.now()}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (e) {
+      console.error('Save image error:', e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
@@ -311,8 +329,8 @@ function ShareModal({ onClose, data }: { onClose: () => void; data: { title: str
               <p className="text-xs text-blue-700 leading-relaxed">只需粘贴链接，AI 即刻将 1 小时的视频浓缩为一张图。分享它，展示你走在硅谷最前沿。</p>
             </div>
           </div>
-          <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition active:scale-95">
-            <Icons.Download className="w-5 h-5" />保存图片到相册
+          <button onClick={handleSave} disabled={isGenerating || isSaving} className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition active:scale-95">
+            {isSaving ? <><div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /><span>保存中...</span></> : <><Icons.Download className="w-5 h-5" /><span>保存图片到相册</span></>}
           </button>
         </div>
         <div className="flex-1 bg-slate-200/50 flex items-center justify-center p-4 md:p-8 overflow-y-auto">
@@ -322,7 +340,7 @@ function ShareModal({ onClose, data }: { onClose: () => void; data: { title: str
               <span className="text-sm font-bold text-slate-500 animate-pulse">正在提炼核心精华...</span>
             </div>
           ) : (
-            <div className="scale-[0.8] md:scale-95 transition-all origin-center drop-shadow-2xl">
+            <div ref={cardRef} className="scale-[0.8] md:scale-95 transition-all origin-center drop-shadow-2xl">
               {cardType === 'notes' ? <NotesCard data={data} /> : <QuoteCard data={data} />}
             </div>
           )}

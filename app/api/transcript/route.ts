@@ -38,7 +38,12 @@ async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
   try {
     const items = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' })
     if (items && items.length > 0) {
-      return items.map(i => i.text).join(' ').replace(/\s+/g, ' ').trim().slice(0, 30000)
+      return items.map(i => {
+        const mins = Math.floor(i.offset / 60)
+        const secs = Math.floor(i.offset % 60)
+        const time = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+        return `[${time}] ${i.text}`
+      }).join('\n').slice(0, 30000)
     }
   } catch (e) {
     console.error('youtube-transcript error:', e)
