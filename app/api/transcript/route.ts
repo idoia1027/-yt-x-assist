@@ -22,6 +22,31 @@ function formatTime(ms: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
+// Channel 0: Supadata API — bypasses Vercel IP block
+async function fetchViaSupadata(videoId: string): Promise<string> {
+  const apiKey = process.env.SUPADATA_API_KEY
+  if (!apiKey) return ''
+  try {
+    const res = await fetch(
+      `https://api.supadata.ai/v1/transcript?url=https://www.youtube.com/watch?v=${videoId}`,
+      { headers: { 'x-api-key': apiKey }, signal: AbortSignal.timeout(15000) }
+    )
+    if (!res.ok) { console.error('supadata error:', res.status); return '' }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any = await res.json()
+    const content: any[] = data?.content
+    if (!content?.length) return ''
+    console.log(`supadata: got ${content.length} segments, lang=${data.lang}`)
+    return content
+      .map((s: any) => `[${formatTime(s.offset)}] ${s.text}`)
+      .join('\n')
+      .slice(0, 30000)
+  } catch (e) {
+    console.error('supadata error:', e)
+  }
+  return ''
+}
+
 // Channel 1: YouTube ANDROID client — most reliable, session-free caption URLs
 async function fetchViaAndroidClient(videoId: string): Promise<string> {
   const clientVersion = '20.10.38'
@@ -149,6 +174,10 @@ async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
 
 async function fetchTranscript(videoId: string): Promise<{ text: string; debug: string }> {
   const log: string[] = []
+
+  const r0 = await fetchViaSupadata(videoId)
+  log.push(`ch0(supadata):${r0 ? r0.length + 'c' : 'empty'}`)
+  if (r0) return { text: r0, debug: log.join('|') }
 
   const r1 = await fetchViaAndroidClient(videoId)
   log.push(`ch1:${r1 ? r1.length + 'c' : 'empty'}`)
