@@ -125,7 +125,7 @@ export async function POST(req: NextRequest) {
     })
 
     const userMessage = transcript
-      ? `请分析以下 YouTube 视频内容：\n\n标题：${title}\n作者：${author}\n\n字幕内容：\n${transcript.slice(0, 30000)}`
+      ? `请分析以下 YouTube 视频内容：\n\n标题：${title}\n作者：${author}\n\n字幕内容（格式为 [MM:SS] 文字，请直接使用这些时间戳填写 timeline 的 time 字段）：\n${transcript.slice(0, 30000)}`
       : `请基于以下视频信息进行分析（无字幕，请基于标题和作者推断主要内容）：\n\n标题：${title}\n作者：${author}\n\n注意：由于无法获取字幕，请在 overview_cn 开头注明"（基于标题分析，内容可能不完整）"，timeline 时间点用 "—" 占位。`
 
     const completion = await client.chat.completions.create({
