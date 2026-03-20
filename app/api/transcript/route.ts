@@ -39,8 +39,9 @@ async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
     const items = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' })
     if (items && items.length > 0) {
       return items.map(i => {
-        const mins = Math.floor(i.offset / 60)
-        const secs = Math.floor(i.offset % 60)
+        const totalSecs = Math.floor(i.offset / 1000)
+        const mins = Math.floor(totalSecs / 60)
+        const secs = totalSecs % 60
         const time = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
         return `[${time}] ${i.text}`
       }).join('\n').slice(0, 30000)

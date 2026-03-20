@@ -278,6 +278,7 @@ function ShareModal({ onClose, data }: { onClose: () => void; data: { title: str
   const [cardType, setCardType] = useState<'notes' | 'quote'>('notes');
   const [isGenerating, setIsGenerating] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     setIsGenerating(true);
@@ -285,16 +286,19 @@ function ShareModal({ onClose, data }: { onClose: () => void; data: { title: str
     return () => clearTimeout(t);
   }, [cardType]);
   const handleSave = async () => {
-    if (!cardRef.current || isSaving) return;
+    if (!cardRef.current || isSaving || isGenerating) return;
     setIsSaving(true);
+    setSaveError(false);
     try {
-      const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 });
+      const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2, skipFonts: false });
       const link = document.createElement('a');
       link.download = `yt-x-assist-${cardType}-${Date.now()}.png`;
       link.href = dataUrl;
       link.click();
     } catch (e) {
       console.error('Save image error:', e);
+      setSaveError(true);
+      setTimeout(() => setSaveError(false), 3000);
     } finally {
       setIsSaving(false);
     }
@@ -329,8 +333,8 @@ function ShareModal({ onClose, data }: { onClose: () => void; data: { title: str
               <p className="text-xs text-blue-700 leading-relaxed">只需粘贴链接，AI 即刻将 1 小时的视频浓缩为一张图。分享它，展示你走在硅谷最前沿。</p>
             </div>
           </div>
-          <button onClick={handleSave} disabled={isGenerating || isSaving} className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition active:scale-95">
-            {isSaving ? <><div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /><span>保存中...</span></> : <><Icons.Download className="w-5 h-5" /><span>保存图片到相册</span></>}
+          <button onClick={handleSave} disabled={isSaving} className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition active:scale-95">
+            {isSaving ? <><div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /><span>保存中...</span></> : saveError ? <span>保存失败，请截图保存</span> : <><Icons.Download className="w-5 h-5" /><span>保存图片到相册</span></>}
           </button>
         </div>
         <div className="flex-1 bg-slate-200/50 flex items-center justify-center p-4 md:p-8 overflow-y-auto">
