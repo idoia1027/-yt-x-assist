@@ -41,40 +41,81 @@ function formatTime(secs: number): string {
 
 // Channel 1: youtube-transcript npm package (works on Vercel)
 async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
-  try {
-    const items = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' })
-    if (items && items.length > 0) {
-      // Detect ms vs seconds: if max offset > 7200, it's milliseconds
-      const maxOffset = items.reduce((max, i) => Math.max(max, i.offset), 0)
-      const divisor = maxOffset > 7200 ? 1000 : 1
-      return items.map(i => `[${formatTime(i.offset / divisor)}] ${i.text}`).join('\n').slice(0, 30000)
+  const langs = ['en', 'zh-Hans', 'zh-Hant', 'zh', undefined]
+  for (const lang of langs) {
+    try {
+      const items = await YoutubeTranscript.fetchTranscript(videoId, lang ? { lang } : {})
+      if (items && items.length > 0) {
+        // Detect ms vs seconds: if max offset > 7200, it's milliseconds
+        const maxOffset = items.reduce((max, i) => Math.max(max, i.offset), 0)
+        const divisor = maxOffset > 7200 ? 1000 : 1
+        console.log(`transcript: channel 1 got ${items.length} items with lang=${lang}, divisor=${divisor}`)
+        return items.map(i => `[${formatTime(i.offset / divisor)}] ${i.text}`).join('\n').slice(0, 30000)
+      }
+    } catch (e) {
+      console.error(`youtube-transcript error (lang=${lang}):`, e)
     }
-  } catch (e) {
-    console.error('youtube-transcript error:', e)
   }
   return ''
 }
 
-// Channel 2: direct timedtext API (fallback)
-async function fetchViaTimedtext(videoId: string): Promise<string> {
+// Channel 2: parse ytInitialPlayerResponse to get caption track URL
+async function fetchViaPageParse(videoId: string): Promise<string> {
   try {
-    const res = await fetch(
-      `https://video.google.com/timedtext?lang=en&v=${videoId}`,
-      { signal: AbortSignal.timeout(10000) }
-    )
-    if (!res.ok) return ''
-    const xml = await res.text()
-    const matches = Array.from(xml.matchAll(/<text\s+start="([^"]+)"[^>]*>([\s\S]*?)<\/text>/g))
-    if (matches.length === 0) return ''
-    return matches
-      .map(m => {
-        const text = m[2].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/<[^>]+>/g, '').trim()
-        return `[${formatTime(parseFloat(m[1]))}] ${text}`
+    const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      },
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!pageRes.ok) { console.error('page parse: page fetch failed', pageRes.status); return '' }
+    const html = await pageRes.text()
+
+    // Extract ytInitialPlayerResponse JSON using brace counting (handles large nested JSON)
+    const markerIdx = html.indexOf('ytInitialPlayerResponse')
+    if (markerIdx === -1) { console.error('page parse: ytInitialPlayerResponse not found'); return '' }
+    const jsonStart = html.indexOf('{', markerIdx)
+    if (jsonStart === -1) { console.error('page parse: opening brace not found'); return '' }
+    let depth = 0, jsonEnd = -1
+    for (let i = jsonStart; i < html.length; i++) {
+      if (html[i] === '{') depth++
+      else if (html[i] === '}') { depth--; if (depth === 0) { jsonEnd = i; break } }
+    }
+    if (jsonEnd === -1) { console.error('page parse: could not find closing brace'); return '' }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const playerData: any = JSON.parse(html.slice(jsonStart, jsonEnd + 1))
+    const captionTracks = playerData?.captions?.playerCaptionsTracklistRenderer?.captionTracks
+    if (!captionTracks || captionTracks.length === 0) {
+      console.error('page parse: no caption tracks found')
+      return ''
+    }
+
+    // Prefer English, fall back to first available
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const track = captionTracks.find((t: any) => t.languageCode?.startsWith('en')) || captionTracks[0]
+    const trackUrl = track.baseUrl + '&fmt=json3'
+    console.log(`page parse: using track lang=${track.languageCode}, url=${trackUrl.slice(0, 80)}...`)
+
+    const captionRes = await fetch(trackUrl, { signal: AbortSignal.timeout(10000) })
+    if (!captionRes.ok) { console.error('page parse: caption fetch failed', captionRes.status); return '' }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any = await captionRes.json()
+
+    const events: any[] = data?.events || []
+    return events
+      .filter((e: any) => e.segs && e.tStartMs !== undefined)
+      .map((e: any) => {
+        const text = (e.segs as any[]).map((s: any) => s.utf8 || '').join('').replace(/\n/g, ' ').trim()
+        return `[${formatTime(e.tStartMs / 1000)}] ${text}`
       })
+      .filter((line: string) => !line.endsWith('] '))
       .join('\n')
       .slice(0, 30000)
   } catch (e) {
-    console.error('timedtext error:', e)
+    console.error('page parse error:', e)
   }
   return ''
 }
@@ -101,15 +142,15 @@ async function fetchViaYtDlp(videoId: string): Promise<string> {
 }
 
 async function fetchTranscript(videoId: string): Promise<string> {
-  // Channel 1
+  // Channel 1: youtube-transcript package
   const result1 = await fetchViaYoutubeTranscript(videoId)
   if (result1) { console.log('transcript: channel 1 success'); return result1 }
 
-  // Channel 2
-  const result2 = await fetchViaTimedtext(videoId)
+  // Channel 2: parse ytInitialPlayerResponse caption tracks
+  const result2 = await fetchViaPageParse(videoId)
   if (result2) { console.log('transcript: channel 2 success'); return result2 }
 
-  // Channel 3
+  // Channel 3: yt-dlp (local dev only)
   const result3 = await fetchViaYtDlp(videoId)
   if (result3) { console.log('transcript: channel 3 success'); return result3 }
 
