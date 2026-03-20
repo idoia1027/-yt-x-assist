@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { YoutubeTranscript } from 'youtube-transcript'
 import { execSync } from 'child_process'
 import fs from 'fs'
 import os from 'os'
@@ -22,21 +23,56 @@ function parseVtt(vtt: string): string {
     .filter(line => {
       if (!line.trim()) return false
       if (line.startsWith('WEBVTT') || line.startsWith('Kind:') || line.startsWith('Language:')) return false
-      if (/^\d{2}:\d{2}/.test(line)) return false   // timestamp lines
-      if (line.includes('<c>') || line.includes('><')) return false  // word-level timing lines
+      if (/^\d{2}:\d{2}/.test(line)) return false
+      if (line.includes('<c>') || line.includes('><')) return false
       return true
     })
-    // deduplicate consecutive identical lines (VTT rolls text forward)
     .filter((line, i, arr) => line !== arr[i - 1])
     .join(' ')
     .replace(/\s+/g, ' ')
     .trim()
 }
 
-async function fetchTranscriptWithYtDlp(videoId: string): Promise<string> {
+// Channel 1: youtube-transcript npm package (works on Vercel)
+async function fetchViaYoutubeTranscript(videoId: string): Promise<string> {
+  try {
+    const items = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' })
+    if (items && items.length > 0) {
+      return items.map(i => i.text).join(' ').replace(/\s+/g, ' ').trim().slice(0, 30000)
+    }
+  } catch (e) {
+    console.error('youtube-transcript error:', e)
+  }
+  return ''
+}
+
+// Channel 2: direct timedtext API (fallback)
+async function fetchViaTimedtext(videoId: string): Promise<string> {
+  try {
+    const res = await fetch(
+      `https://video.google.com/timedtext?lang=en&v=${videoId}`,
+      { signal: AbortSignal.timeout(10000) }
+    )
+    if (!res.ok) return ''
+    const xml = await res.text()
+    const texts = Array.from(xml.matchAll(/<text[^>]*>([\s\S]*?)<\/text>/g))
+    if (texts.length === 0) return ''
+    return texts
+      .map(m => m[1].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&quot;/g, '"'))
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 30000)
+  } catch (e) {
+    console.error('timedtext error:', e)
+  }
+  return ''
+}
+
+// Channel 3: yt-dlp (local dev fallback, not available on Vercel)
+async function fetchViaYtDlp(videoId: string): Promise<string> {
   const tmpDir = os.tmpdir()
   const tmpBase = path.join(tmpDir, `yt_${videoId}`)
-
   try {
     execSync(
       `yt-dlp --skip-download --write-auto-sub --sub-lang en --sub-format vtt -o "${tmpBase}" "https://www.youtube.com/watch?v=${videoId}" --quiet`,
@@ -54,6 +90,23 @@ async function fetchTranscriptWithYtDlp(videoId: string): Promise<string> {
   return ''
 }
 
+async function fetchTranscript(videoId: string): Promise<string> {
+  // Channel 1
+  const result1 = await fetchViaYoutubeTranscript(videoId)
+  if (result1) { console.log('transcript: channel 1 success'); return result1 }
+
+  // Channel 2
+  const result2 = await fetchViaTimedtext(videoId)
+  if (result2) { console.log('transcript: channel 2 success'); return result2 }
+
+  // Channel 3
+  const result3 = await fetchViaYtDlp(videoId)
+  if (result3) { console.log('transcript: channel 3 success'); return result3 }
+
+  console.log('transcript: all channels failed')
+  return ''
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { url } = await req.json()
@@ -65,7 +118,7 @@ export async function POST(req: NextRequest) {
     const [oembedData, transcriptText] = await Promise.all([
       fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`)
         .then(r => r.ok ? r.json() : {}) as Promise<{title?: string; author_name?: string}>,
-      fetchTranscriptWithYtDlp(videoId),
+      fetchTranscript(videoId),
     ])
 
     return NextResponse.json({
