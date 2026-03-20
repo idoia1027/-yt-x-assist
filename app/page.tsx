@@ -688,7 +688,7 @@ export default function App() {
                 </div>
                 <div className="text-center">
                   <p className="text-lg font-bold text-slate-800 mb-2">AI 正在深度解析视频内容</p>
-                  <p className="text-sm text-slate-500">正在获取字幕并调用 Gemini 分析，通常需要 15–30 秒</p>
+                  <p className="text-sm text-slate-500">正在获取字幕并调用 AI 分析，通常需要 15–30 秒</p>
                 </div>
                 <div className="flex gap-1.5">
                   {[0,1,2].map(i => (
@@ -840,8 +840,16 @@ export default function App() {
     return (
       <div className="min-h-screen flex flex-col bg-slate-50">
         <Header onViewChange={setView} />
-        <main className="flex-1">
-          <ProfilePage data={SAMPLE_USER_DATA} mySubs={mySubs} onGoToDetail={handleVideoClick} onSubscribe={handleSubscribe} onUnsubscribe={handleUnsubscribe} />
+        <main className="flex-1 relative">
+          <div className="opacity-30 pointer-events-none select-none">
+            <ProfilePage data={SAMPLE_USER_DATA} mySubs={mySubs} onGoToDetail={handleVideoClick} onSubscribe={handleSubscribe} onUnsubscribe={handleUnsubscribe} />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-white border border-slate-200 rounded-2xl px-8 py-6 text-center shadow-lg">
+              <p className="text-lg font-bold text-slate-600 mb-1">开发中，敬请期待</p>
+              <p className="text-sm text-slate-400">个人中心功能即将上线</p>
+            </div>
+          </div>
         </main>
         <footer className="py-4 px-4 md:px-8 border-t border-slate-200 bg-white mt-4">
           <div className="max-w-7xl mx-auto text-center"><p className="text-sm text-slate-500">idoiawang</p></div>
@@ -872,13 +880,17 @@ export default function App() {
                 { icon: Icons.Translate, bg: "bg-orange-50", hover: "group-hover:bg-orange-500", text: "text-orange-600", title: "原文精炼+翻译", desc: "AI 智能总结提炼，保障原意不失真，省时高效。" },
                 { icon: Icons.Radar, bg: "bg-blue-50", hover: "group-hover:bg-blue-600", text: "text-blue-600", title: "定制硅谷雷达", desc: "支持指定单视频源和自定义关注博主，定制你的专属情报流，指哪打哪。" },
                 { icon: Icons.Book, bg: "bg-emerald-50", hover: "group-hover:bg-emerald-600", text: "text-emerald-600", title: "双语对照学习", desc: "不仅是看新闻，更是专业术语与英语能力的同步进阶。" },
-              ].map((f, i) => (
-                <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition group">
-                  <div className={`w-8 h-8 rounded-lg ${f.bg} ${f.text} flex items-center justify-center mb-3 ${f.hover} group-hover:text-white transition`}><f.icon className="w-5 h-5" /></div>
-                  <div className="text-xs font-bold text-slate-800 mb-1">{f.title}</div>
-                  <p className="text-[10px] text-slate-500 leading-relaxed">{f.desc}</p>
-                </div>
-              ))}
+              ].map((f, i) => {
+                const isComingSoon = f.title === "定制硅谷雷达";
+                return (
+                  <div key={i} className={`bg-white border border-slate-200 rounded-xl p-4 shadow-sm transition relative ${isComingSoon ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-md group'}`}>
+                    <div className={`w-8 h-8 rounded-lg ${f.bg} ${f.text} flex items-center justify-center mb-3 ${isComingSoon ? '' : `${f.hover} group-hover:text-white`} transition`}><f.icon className="w-5 h-5" /></div>
+                    <div className="text-xs font-bold text-slate-800 mb-1">{f.title}</div>
+                    <p className="text-[10px] text-slate-500 leading-relaxed">{f.desc}</p>
+                    {isComingSoon && <div className="absolute inset-0 flex items-end justify-center pb-3 rounded-xl"><span className="text-[10px] font-bold text-slate-400 bg-white/80 px-2 py-0.5 rounded-full border border-slate-200">开发中，敬请期待</span></div>}
+                  </div>
+                );
+              })}
             </div>
             <div className="relative max-w-xl mx-auto group mb-2">
               <div className="absolute inset-0 bg-indigo-200 rounded-2xl blur opacity-20 group-hover:opacity-40 transition" />
@@ -951,18 +963,22 @@ export default function App() {
 
             <div className="lg:col-span-4 flex flex-col gap-6">
               <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2"><Icons.XLogo className="w-4 h-4" /> 权威观点快讯</h3>
-                <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">语义关联推荐</span>
+                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2"><Icons.XLogo className="w-4 h-4" /> 权威观点快讯</h3>
+                <span className="text-[10px] bg-slate-100 text-slate-400 px-2 py-0.5 rounded-full">开发中，敬请期待</span>
               </div>
-              <div className="space-y-4">
-                <div className="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3">
-                  <p className="text-xs text-slate-700 text-left leading-relaxed"><span className="font-bold text-indigo-700">为什么看这些？</span> AI 已基于你关注的"LLM 进阶"主题，聚合了相关大佬的最新碎碎念。长短结合，信息才完整。</p>
+              <div className="relative">
+                <div className="space-y-4 opacity-30 pointer-events-none select-none">
+                  <div className="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3">
+                    <p className="text-xs text-slate-700 text-left leading-relaxed"><span className="font-bold text-indigo-700">为什么看这些？</span> AI 已基于你关注的"LLM 进阶"主题，聚合了相关大佬的最新碎碎念。长短结合，信息才完整。</p>
+                  </div>
+                  {tweets.map(t => <TweetCard key={t.id} data={t} />)}
                 </div>
-                {tweets.map(t => <TweetCard key={t.id} data={t} />)}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="bg-white/90 border border-slate-200 rounded-xl px-5 py-3 text-center shadow-sm">
+                    <p className="text-sm font-bold text-slate-500">开发中，敬请期待</p>
+                  </div>
+                </div>
               </div>
-              <button onClick={() => setShowAllTweets(v => !v)} className="w-full py-3 rounded-xl border border-dashed border-slate-300 text-xs font-bold text-slate-500 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 transition flex items-center justify-center gap-2 group">
-                {showAllTweets ? <>收起历史推文 <Icons.ChevronUp className="w-3 h-3" /></> : <>查看订阅用户近 7 天推文 <Icons.ChevronDown className="w-3 h-3 group-hover:translate-y-0.5 transition" /></>}
-              </button>
             </div>
           </div>
 
